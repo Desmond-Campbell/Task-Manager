@@ -1,0 +1,144 @@
+
+/**
+ * For the correct positioning of the placeholder element, the dnd-list and
+ * it's children must have position: relative
+ */
+.simpleDemo ul[dnd-list],
+.simpleDemo ul[dnd-list] > li.dnd-transition-item,
+li.dnd-transition-item-mandatory,
+.simpleDemo ul[dnd-list] > li.dnd-stage-item {
+    position: relative;
+}
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+.simpleDemo ul[dnd-list] {
+    min-height: 42px;
+    padding-left: 0px;
+}
+
+/**
+ * The dndDraggingSource class will be applied to
+ * the source element of a drag operation. It makes
+ * sense to hide it to give the user the feeling
+ * that he's actually moving it.
+ */
+.simpleDemo ul[dnd-list] .dndDraggingSource {
+    display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+.simpleDemo ul[dnd-list] .dndPlaceholder {
+    display: block;
+    background-color: #ddd;
+    min-height: 42px;
+}
+
+/**
+ * The dnd-lists's child elements currently MUST have
+ * position: relative. Otherwise we can not determine
+ * whether the mouse pointer is in the upper or lower
+ * half of the element we are dragging over. In other
+ * browsers we can use event.offsetY for this.
+ */
+.simpleDemo ul[dnd-list] li.dnd-transition-item, li.dnd-transition-item-mandatory {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    /*margin-top: 1px !important;
+    margin-bottom:1px !important;*/
+    cursor: move;
+    font-size: 1.2em;
+    border: 0px;
+    background:#F6f6f6;
+    padding:0px;
+        -webkit-box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.9);
+-moz-box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.9);
+box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.9);
+}
+
+li.dnd-transition-item-mandatory {
+    cursor: default;
+}
+
+.simpleDemo ul[dnd-list] li.dnd-transition-item .transition-title,
+li.dnd-transition-item-mandatory .transition-title {
+    font-weight: bold;
+}
+
+.simpleDemo ul[dnd-list] li.dnd-stage-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    cursor: move;
+    font-size: 1.2em;
+    border: 0px;
+    background:#F6f6f6;
+    padding:0px;
+        -webkit-box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.9);
+-moz-box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.9);
+box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.9);
+}
+
+.simpleDemo ul[dnd-list] li.dnd-stage-item .stage-icon,
+li.dnd-transition-item-mandatory .transition-icon,
+.simpleDemo ul[dnd-list] li.dnd-transition-item .transition-icon {
+        background-color: #006e8c;
+    color: #fff;
+    padding: 17px 0px 17px;
+    margin-right: 10px;
+    m/argin-top: -15px;
+    width: 50px;
+    height: 48px;
+    display: inline-block;
+    font: normal normal normal 19px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+}
+
+.simpleDemo ul[dnd-list] li.dnd-stage-item .mandatory, .mandatory {
+    background-color: #6D0204 !important;
+}
+
+.simpleDemo ul[dnd-list] li.dnd-transition-item .transition-description,
+li.dnd-transition-item-mandatory .transition-description
+ {
+    color: #9C9FA2;
+}
+
+/**
+ * Show selected elements in green
+ */
+.simpleDemo ul[dnd-list] li.selected {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.mandatory-list-above {
+    margin-bottom: -15px;
+    padding-left: 10px;
+}
+
+.mandatory-list-below {
+    margin-top: -15px;
+    padding-left: 10px;
+}
