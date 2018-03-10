@@ -32,6 +32,128 @@ var vm = new Vue({
 
 		},
 
+		completeTask : function ( task ) {
+
+			if ( alertConfirm( ___t('Done?') ) ) {
+
+				axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'complete' } ).then( 
+
+					function ( response ) {
+
+						vm.fetchTasks();
+
+					},
+
+					function () {
+
+						alertError( general_error_failure );
+
+					}
+
+				);
+
+			}
+
+		},
+
+		followupTask : function ( task ) {
+
+			var followup_action = prompt("Follow-up action:", "");
+			var due = prompt("Due date and time:", "");
+	
+			if ( !action || !due ) { return; }
+
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, followup_action : followup_action, due : due, action : 'followup' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTasks();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		rescheduleTask : function ( task ) {
+
+			var due = prompt("Due date and time:", "");
+
+			if ( !due ) { return; }
+			
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, due : due, action : 'reschedule' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTasks();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		reassignTask : function ( task ) {
+
+			var assignees = prompt("Assignees:", "");
+
+			if ( !assignees ) { return; }
+			
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, assignees : assignees, action : 'reassign' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTasks();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+		cancelTask : function ( task ) {
+
+			if ( alertConfirm( ___t('Cancel?') ) ) {
+
+				console.log('aaaaa')
+
+				axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'cancel' } ).then( 
+
+					function ( response ) {
+
+						vm.fetchTasks();
+
+					},
+
+					function () {
+
+						alertError( general_error_failure );
+
+					}
+
+				);
+
+			}
+
+		},
+
 		getTasks : function (period) {
 
 			vm.period = period;

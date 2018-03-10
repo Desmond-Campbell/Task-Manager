@@ -4,8 +4,10 @@ var vm = new Vue({
 	
 	data : { 
 						id : 0, 
-						task : { title : '', task_items : [] },
+						task : { title : '', task_items : [], followups : [] },
 						taskItemEditId : -1, 
+						followupEditId : -1,
+						editMode : 'details', 
 					},
 	
 	methods : {
@@ -38,7 +40,7 @@ var vm = new Vue({
 
 			} else {
 
-				this.task = { title : '', task_items : [] };
+				this.task = { title : '', task_items : [], followups : [] };
 
 			}
 
@@ -57,6 +59,7 @@ var vm = new Vue({
 					} else {
 
 						vm.taskItemEditId = -1;
+						vm.followupEditId = -1;
 						vm.id = response.data.task.id;
 
 						alertSuccess( ___t('Saved.') );
@@ -89,9 +92,9 @@ var vm = new Vue({
 
 						} else {
 
-							vm.taskItemEditId = -1;
+							vm.followupEditId = -1;
 							vm.id = 0;
-							vm.task = { title : '', task_items : [] };
+							vm.task = { title : '', task_items : [], followups : [] };
 
 						}
 
@@ -114,8 +117,6 @@ var vm = new Vue({
 			index = vm.task.task_items.length;
 			vm.task.task_items.push({});
 			vm.taskItemEditId = index;
-
-			console.log(index,'index');
 
 			vm.refresh();
 
@@ -154,6 +155,28 @@ var vm = new Vue({
 		moveTaskItemDown : function ( index ) {
 
 			vm.task.task_items.move( index, index + 1 );
+
+		},
+
+		addFollowup : function () {
+
+			index = vm.task.followups.length;
+			vm.task.followups.push({});
+			vm.followupEditId = index;
+
+			vm.refresh();
+
+		},
+
+		deleteFollowup : function ( index ) {
+
+			if ( alertConfirm( ___t( 'Delete this followup item?' ) ) ) {
+
+				vm.task.followups[index].deleted = true;
+				vm.followupEditId = -1;
+				vm.refresh();
+
+			}
 
 		},
 

@@ -63,11 +63,11 @@
 							@{{ task.due_date }} | @{{ task.due_time }}
 						</div>
 						<div class="task-entry-controls">
-							<button class="btn btn-sm btn-secondary" @click="completeTask()">{{ ___('Done') }}</button>
-							<button class="btn btn-sm btn-secondary" @click="rescheduleTask()">{{ ___('Re-schedule') }}</button>
-							<button class="btn btn-sm btn-secondary" @click="reassignTask()">{{ ___('Re-assign') }}</button>
-							<button class="btn btn-sm btn-secondary" @click="followupTask()">{{ ___('Follow-up') }}</button>
-							<button class="btn btn-sm btn-secondary" @click="cancelTask()">{{ ___('Cancel') }}</button>
+							<button class="btn btn-sm btn-secondary" @click="completeTask(task)">{{ ___('Done') }}</button>
+							<button class="btn btn-sm btn-secondary" @click="rescheduleTask(task)">{{ ___('Re-schedule') }}</button>
+							<button class="btn btn-sm btn-secondary" @click="reassignTask(task)">{{ ___('Re-assign') }}</button>
+							<button class="btn btn-sm btn-secondary" @click="followupTask(task)">{{ ___('Follow-up') }}</button>
+							<button class="btn btn-sm btn-secondary" @click="cancelTask(task)">{{ ___('Cancel') }}</button>
 						</div>
 					</div>
 					<div class="col-md-1">

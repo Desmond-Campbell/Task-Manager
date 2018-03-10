@@ -6,7 +6,13 @@ function ___t( text ) {
 
 function alertError( error ) {
 
-	alert( error );
+    alert( error );
+
+}
+
+function alertSuccess( message ) {
+
+    alert( message );
 
 }
 

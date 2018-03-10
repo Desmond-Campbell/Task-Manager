@@ -16,7 +16,7 @@
 
 			<div class="row">
 
-				<div class="col-md-6">
+				<div class="col-md-6 dashboard-section">
 
 					<h3>{{ ___("What's due today?") }}</h3>
 
@@ -40,7 +40,7 @@
 
 				</div>
 
-				<div class="col-md-6">
+				<div class="col-md-6 dashboard-section">
 
 					<h3>{{ ___("What's late?") }}</h3>
 
@@ -71,11 +71,11 @@
 
 			<div class="row">
 
-				<div class="col-md-6">
+				<div class="col-md-6 dashboard-section">
 
 					<h3>{{ ___("What should I follow-up?") }}</h3>
 
-					<div v-for="task in tasks.followup" class="row dashboard-item dashboard-item-followup">
+					<div v-for="task in tasks.followups" class="row dashboard-item dashboard-item-followup">
 						<div class="col-md-1 task-entry-lead">
 							<div class="task-entry-priority">@{{ task.priority }}</div>
 							<div class="task-entry-completion">@{{ task.completion }}%</div>
@@ -92,7 +92,7 @@
 									<div class="task-entry-followup-action">
 										@{{ followup.action }}
 									</div>
-									<div class="task-entry-followup-action">
+									<div class="task-entry-followup-action-due-date">
 										@{{ followup.due_date }} | @{{ followup.due_time }}
 									</div>
 									<div class="task-entry-followup-controls">
@@ -113,7 +113,7 @@
 
 				</div>
 
-				<div class="col-md-6">
+				<div class="col-md-6 dashboard-section">
 
 					<h3>{{ ___("What's in the pipeline?") }}</h3>
 

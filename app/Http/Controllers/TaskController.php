@@ -31,7 +31,7 @@ class TaskController extends Controller
  		$user_id = get_user_id();
  		$project_id = get_project_id();
 
- 		$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items')->find( $id );
+ 		$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups')->find( $id );
 
  		return response()->json( [ 'task' => $task ] );
 
@@ -55,12 +55,13 @@ class TaskController extends Controller
  		$features = $R->input('features');
  		$assignees = $R->input('assignees');
  		$task_items = $R->input('task_items');
+ 		$followups = $R->input('followups');
 
  		$task = null;
 
  		if ( $id ) {
 
- 			$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items')->find( $id );
+ 			$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups')->find( $id );
 
  			if ( !$task ) $task = null;
 
@@ -95,7 +96,7 @@ class TaskController extends Controller
 
  			foreach ( $task_items as $task_item ) {
 
- 				$task_item_record = TaskItem::where('user_id', $user_id)->find( $task_item['id'] );
+ 				$task_item_record = TaskItem::where('user_id', $user_id)->find( $task_item['id'] ?? 0 );
 
  				if ( !$task_item_record ) {
 
@@ -121,6 +122,37 @@ class TaskController extends Controller
  				
  			}
 
+ 			foreach ( $followups as $followup ) {
+
+ 				$followup['due_date'] = Carbon::parse( $followup['due_date'] )->toDateString();
+ 				$followup['due_time'] = Carbon::parse( $followup['due_time'] ?? '12:00' )->toTimeString();
+
+ 				$followup_record = TaskFollowup::where('user_id', $user_id)->find( $followup['id'] ?? 0 );
+
+ 				if ( !$followup_record ) {
+
+	 				$followup['task_id'] = $task->id;
+	 				$followup['user_id'] = $user_id;
+
+	 				TaskFollowup::create( $followup );
+
+	 			} else {
+
+	 				if ( !( $followup['deleted'] ?? false ) ) {
+
+	 					$followup_record->update( $followup );
+	 					$followup_record->save();
+
+	 				} else {
+
+	 					$followup_record->delete();
+
+	 				}
+
+	 			}
+ 				
+ 			}
+
  		} else {
 
  			$data['user_id'] = $user_id;
@@ -137,9 +169,20 @@ class TaskController extends Controller
 
  			}
 
+ 			foreach ( $followups as $followup ) {
+
+ 				$followup['task_id'] = $task->id;
+ 				$followup['user_id'] = $user_id;
+				$followup['due_date'] = Carbon::parse( $followup['due_date'] )->toDateString();
+ 				$followup['due_time'] = Carbon::parse( $followup['due_time'] ?? '12:00' )->toTimeString();
+
+ 				TaskFollowup::create( $followup );
+
+ 			}
+
  		}
 
- 		$task = Task::with( 'task_items' )->find( $id );
+ 		$task = Task::with( 'task_items', 'followups' )->find( $id );
 
  		return response()->json( [ 'task' => $task ] );
 
@@ -153,7 +196,82 @@ class TaskController extends Controller
 
  		if ( $id ) {
 
- 			$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items')->find( $id )->delete();
+ 			$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups')->find( $id )->delete();
+
+ 		} else {
+
+ 			return response()->json( [ 'errors' => ___('Not found.') ] );
+
+ 		}
+
+ 	}
+
+ 	public function action( Request $R ) {
+
+ 		$id = $R->route('id', 0);
+ 		$project_id = get_project_id();
+ 		$user_id = get_user_id();
+
+ 		if ( $id ) {
+
+ 			$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups')->find( $id );
+
+ 			if ( $task ) {
+
+ 				switch ( $R->input('action') ) {
+
+ 					case 'complete':
+
+ 						$task->completed = 1;
+ 						$task->save();
+
+ 					break;
+
+ 					case 'cancel':
+
+ 						$task->delete();
+
+ 					break;
+
+ 					case 'reschedule':
+
+ 						$task_due = explode( ' ', $R->input('due') );
+ 							$task_due_date = ( $task_due[0] ?? '' ) ?? 'tomorrow';
+ 							$task_due_time = ( $task_due[1] ?? '' ) ?? '13:00:00';
+ 						$task->due_date = Carbon::parse( $task_due_date )->toDateString();
+ 						$task->due_time = Carbon::parse( $task_due_time )->toTimeString();
+
+ 						$task->save();
+
+ 					break;
+
+ 					case 'followup':
+
+ 						$followup = [];
+ 						$followup['user_id'] = get_user_id();
+ 						$followup['task_id'] = $id;
+ 						$followup['action'] = $R->input('followup_action');
+
+ 						$followup_due = explode( ' ', $R->input('due') );
+ 							$followup_due_date = ( $followup_due[0] ?? '' ) ?? 'tomorrow';
+ 							$followup_due_time = ( $followup_due[1] ?? '' ) ?? '13:00:00';
+ 						$followup['due_date'] = Carbon::parse( $followup_due_date )->toDateString();
+ 						$followup['due_time'] = Carbon::parse( $followup_due_time )->toTimeString();
+ 						
+ 						TaskFollowup::create( $followup );
+
+ 					break;
+
+ 					case 'reassign':
+
+ 						$task->assignees = $R->input('assignees');
+ 						$task->save();
+
+ 					break;
+
+ 				}
+
+ 			}
 
  		} else {
 
@@ -247,7 +365,7 @@ class TaskController extends Controller
 
 	 	}
 
- 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items');
+ 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups');
 
 		if ( $range ?? false ) {
 
@@ -295,7 +413,7 @@ class TaskController extends Controller
 
  		$due_date = Carbon::parse( Carbon::parse( $when )->toDateString() );
 
- 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items');
+ 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups');
 
 		$tasks = $tasks->where('due_date', '<', $due_date)->where('completed', 0);
 
@@ -330,7 +448,7 @@ class TaskController extends Controller
  		$due_date_start = Carbon::parse( $when )->toDateString();
  		$due_date = Carbon::parse( $due_date_start )->addDays( 1 )->addMinutes( -1 )->toDateString();
 
- 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items');
+ 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups');
 
  		$tasks = $tasks->where('start_date', '<=', $due_date_start);
 		$tasks = $tasks->where('due_date', '>=', $due_date);

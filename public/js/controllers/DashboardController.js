@@ -60,7 +60,7 @@ var vm = new Vue({
 
 			vm.$forceUpdate();
 
-		}
+		},
 
 	},
 

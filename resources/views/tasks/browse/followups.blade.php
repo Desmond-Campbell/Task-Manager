@@ -111,5 +111,5 @@
 
 @section('javascript-controllers')
 <script type="text/javascript" src="/js/controllers/BrowseController.js"></script>
-<script type="text/javascript">vm.mode = 'due'; vm.fetchTasks();</script>
+<script type="text/javascript">vm.mode = 'followups'; vm.fetchTasks();</script>
 @stop

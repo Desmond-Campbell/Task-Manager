@@ -33,3 +33,5 @@ Route::post('/api/tasks/followups/{when}', 'TaskController@apiBrowseFollowups');
 Route::get('/api/tasks/{id}/get', 'TaskController@getTask');
 Route::post('/api/tasks/{id}/update', 'TaskController@updateTask');
 Route::delete('/api/tasks/{id}/delete', 'TaskController@deleteTask');
+
+Route::post('/api/tasks/{id}/action', 'TaskController@action');
