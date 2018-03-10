@@ -14,6 +14,10 @@ class Task extends Model
   	return $this->hasMany(\App\TaskItem::class);
   }
 
+  public function followups() {
+  	return $this->hasMany(\App\TaskFollowup::class);
+  }
+
   public function user() {
   	return $this->belongsTo(\App\User::class);
   }

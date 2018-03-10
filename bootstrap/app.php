@@ -15,7 +15,7 @@ $app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')
 );
 
-require_once( '../app/functions.php' );
+require_once( base_path() . '/app/functions.php' );
 
 /*
 |--------------------------------------------------------------------------

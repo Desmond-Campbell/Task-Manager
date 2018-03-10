@@ -38,6 +38,7 @@ class CreateTables extends Migration
             $table->text('categories')->nullable();
             $table->text('features')->nullable();
             $table->string('status')->nullable()->default('queued');
+            $table->boolean('completed')->nullable()->default(0);
             $table->integer('user_id')->unsigned();
             $table->timestamps();
 

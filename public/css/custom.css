@@ -9,3 +9,62 @@ body {
 .push-down {
 	margin-top: 25px;
 }
+
+.filter-menu {
+	margin-left: -40px;
+	height: 32px;
+}
+
+.filter-menu, .filter-menu li {
+	list-style-type: none;
+	list-style: none;
+}
+
+.filter-menu li {
+	float: left;
+	display: block;
+	margin-right: 15px;
+}
+
+.task-entry {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.task-entry-priority {
+	padding-top: 5px;
+	text-align: center !important;
+	font-weight: bold;	
+}
+
+.task-entry-completion {
+	text-align: center !important;	
+}
+
+.task-entry-title {
+	font-weight: bold;
+}
+
+.task-entry-title a {
+	color: #000 !important;
+	font-size: 125%;
+}
+
+.task-entry-description {
+	color: #999;
+	font-size: 75%;
+}
+
+.task-entry-due-date {
+	font-size: 95%;
+	color: #555;
+}
+
+.task-entry-controls {
+	margin-top: 10px;
+}
+
+
+.full-width {
+	width: 100%;
+}

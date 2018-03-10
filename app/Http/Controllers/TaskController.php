@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Task;
 use App\TaskItem;
+use App\TaskFollowup;
 
 class TaskController extends Controller
 {
@@ -125,6 +126,7 @@ class TaskController extends Controller
  			$data['user_id'] = $user_id;
  			$data['project_id'] = $project_id;
  			$task = Task::create( $data );
+ 			$id = $task->id;
 
  			foreach ( $task_items as $task_item ) {
 
@@ -136,6 +138,277 @@ class TaskController extends Controller
  			}
 
  		}
+
+ 		$task = Task::with( 'task_items' )->find( $id );
+
+ 		return response()->json( [ 'task' => $task ] );
+
+ 	}
+
+ 	public function deleteTask( Request $R ) {
+
+ 		$id = $R->route('id', 0);
+ 		$project_id = get_project_id();
+ 		$user_id = get_user_id();
+
+ 		if ( $id ) {
+
+ 			$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items')->find( $id )->delete();
+
+ 		} else {
+
+ 			return response()->json( [ 'errors' => ___('Not found.') ] );
+
+ 		}
+
+ 	}
+
+ 	public function index() {
+
+ 		return view('tasks.index');
+
+ 	}
+
+ 	public function browseDue() {
+
+ 		return view('tasks.browse.due');
+
+ 	}
+
+ 	public function browseLate() {
+
+ 		return view('tasks.browse.late');
+
+ 	}
+
+ 	public function browsePipeline() {
+
+ 		return view('tasks.browse.pipeline');
+
+ 	}
+
+ 	public function browseFollowups() {
+
+ 		return view('tasks.browse.followups');
+
+ 	}
+
+ 	public function apiBrowseDue( Request $R ) {
+
+ 		$when = $when_modified = str_replace( '+', ' ', $R->route('when', 'today') );
+ 		$user_id = get_user_id();
+ 		$project_id = get_project_id();
+
+ 		$sort = $R->input('sort', [ 'field' => 'priority', 'order' => 'asc', 'show_completed' => false ] );
+
+ 		if ( in_array( $when, [ 'yesterday', 'today', 'tomorrow' ] ) ) {
+
+	 		$due_date = Carbon::parse( Carbon::parse( $when )->toDateString() )->addDays( 1 )->addMinutes( -1 )->toDateString();
+
+	 	} else {
+
+	 		$range = true;
+
+	 		switch ( $when ) {
+
+	 			case 'this week':
+
+	 				$when_modified = 'last week sunday';
+	 				$due_date_start = Carbon::parse( $when_modified )->toDateString();
+	 				$due_date_end = Carbon::parse( $when_modified )->addWeeks(1)->toDateString();
+
+	 			break;
+
+	 			case 'next week':
+
+	 				$when_modified = 'this week sunday';
+	 				$due_date_start = Carbon::parse( $when_modified )->toDateString();
+	 				$due_date_end = Carbon::parse( $when_modified )->addWeeks(1)->toDateString();
+
+	 			break;
+
+	 			case 'this month':
+
+	 				$when_modified = 'first day of this month';
+	 				$due_date_start = Carbon::parse( $when_modified )->toDateString();
+	 				$due_date_end = Carbon::parse( $when_modified )->addMonths(1)->toDateString();
+
+	 			break;
+
+	 			case 'next month':
+
+	 				$when_modified = 'first day of next month';
+	 				$due_date_start = Carbon::parse( $when_modified )->toDateString();
+	 				$due_date_end = Carbon::parse( $when_modified )->addMonths(1)->toDateString();
+
+	 			break;
+
+	 		}
+
+	 	}
+
+ 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items');
+
+		if ( $range ?? false ) {
+
+			$tasks = $tasks->whereBetween('due_date', [ $due_date_start, $due_date_end ] );
+
+		} else {
+
+			$tasks = $tasks->where('due_date', $due_date);
+
+		}
+
+		if ( !( $sort['show_completed'] ?? false ) ) {
+
+ 			$tasks = $tasks->where('completed', 0);
+
+ 		}
+
+		if ( in_array( $sort['field'] ?? 'priority', [ 'priority', 'completion' ] ) ) {
+
+			$sort_field = $sort['field'];
+			$sort_order = $sort['order'] ?? 'asc' == 'desc' ? 'desc' : 'asc';
+
+			$tasks = $tasks->orderBy( $sort_field, $sort_order );
+
+		}
+
+		if ( $sort['limit'] ?? false ) {
+
+			$tasks = $tasks->take( $sort['limit'] );
+
+		}
+
+ 		$tasks = $tasks->get();
+
+ 		return response()->json( [ 'tasks' => $tasks, 'mode' => 'due' ] );
+
+ 	}
+
+ 	public function apiBrowseLate( Request $R ) {
+
+ 		$when = 'today';
+ 		$user_id = get_user_id();
+ 		$project_id = get_project_id();
+ 		$sort = $R->input('sort', [ 'field' => 'priority', 'order' => 'asc', 'show_completed' => false ] );
+
+ 		$due_date = Carbon::parse( Carbon::parse( $when )->toDateString() );
+
+ 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items');
+
+		$tasks = $tasks->where('due_date', '<', $due_date)->where('completed', 0);
+
+ 		if ( in_array( $sort['field'] ?? 'priority', [ 'priority', 'completion' ] ) ) {
+
+			$sort_field = $sort['field'];
+			$sort_order = $sort['order'] ?? 'asc' == 'desc' ? 'desc' : 'asc';
+
+			$tasks = $tasks->orderBy( $sort_field, $sort_order );
+
+		}
+
+		if ( $sort['limit'] ?? false ) {
+
+			$tasks = $tasks->take( $sort['limit'] );
+
+		}
+
+ 		$tasks = $tasks->get();
+
+ 		return response()->json( [ 'tasks' => $tasks, 'mode' => 'late' ] );
+
+ 	}
+
+ 	public function apiBrowsePipeline( Request $R ) {
+
+ 		$when = $R->route('when', 'today');
+ 		$user_id = get_user_id();
+ 		$project_id = get_project_id();
+ 		$sort = $R->input('sort', [ 'field' => 'priority', 'order' => 'asc', 'show_completed' => false ] );
+
+ 		$due_date_start = Carbon::parse( $when )->toDateString();
+ 		$due_date = Carbon::parse( $due_date_start )->addDays( 1 )->addMinutes( -1 )->toDateString();
+
+ 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items');
+
+ 		$tasks = $tasks->where('start_date', '<=', $due_date_start);
+		$tasks = $tasks->where('due_date', '>=', $due_date);
+
+ 		if ( !$R->input('show_completed', false) ) {
+
+ 			$tasks = $tasks->where('completed', 0);
+
+ 		}
+
+ 		if ( in_array( $sort['field'] ?? 'priority', [ 'priority', 'completion' ] ) ) {
+
+			$sort_field = $sort['field'];
+			$sort_order = $sort['order'] ?? 'asc' == 'desc' ? 'desc' : 'asc';
+
+			$tasks = $tasks->orderBy( $sort_field, $sort_order );
+
+		}
+
+		if ( $sort['limit'] ?? false ) {
+
+			$tasks = $tasks->take( $sort['limit'] );
+
+		}
+
+ 		$tasks = $tasks->get();
+
+ 		return response()->json( [ 'tasks' => $tasks, 'mode' => 'pipeline' ] );
+
+ 	}
+
+ 	public function apiBrowseFollowups( Request $R ) {
+
+ 		$when = $R->route('when', 'today');
+ 		$user_id = get_user_id();
+ 		$project_id = get_project_id();
+ 		$sort = $R->input('sort', [ 'field' => 'priority', 'order' => 'asc', 'show_completed' => false ] );
+
+ 		$due_date = Carbon::now()->toDateString();
+
+	 	$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('followups');
+
+	 	if ( $when != 'late' ) {
+
+			$tasks = $tasks->whereHas( 'followups', function( $q ) 
+																									use ( $due_date ) 
+																								{
+																									$q->where('due_date', $due_date );
+																								} );
+
+		} else {
+
+				$tasks = $tasks->whereHas( 'followups', function( $q ) 
+																									use ( $due_date ) 
+																								{
+																									$q->where('due_date', '<', $due_date );
+																								} );
+
+		}
+
+ 		if ( in_array( $sort['field'] ?? 'priority', [ 'priority', 'completion' ] ) ) {
+
+			$sort_field = $sort['field'];
+			$sort_order = $sort['order'] ?? 'asc' == 'desc' ? 'desc' : 'asc';
+
+			$tasks = $tasks->orderBy( $sort_field, $sort_order );
+
+		}
+
+		if ( $sort['limit'] ?? false ) {
+
+			$tasks = $tasks->take( $sort['limit'] );
+
+		}
+
+ 		$tasks = $tasks->get();
+
+ 		return response()->json( [ 'tasks' => $tasks, 'mode' => 'followups' ] );
 
  	}
 
