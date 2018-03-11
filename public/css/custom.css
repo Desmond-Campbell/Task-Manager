@@ -103,6 +103,10 @@ body {
 	color: #06659F !important;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
 .full-width {
 	width: 100%;
 }

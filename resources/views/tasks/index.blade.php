@@ -18,7 +18,7 @@
 
 				<div class="col-md-6 dashboard-section">
 
-					<h3>{{ ___("What's due today?") }}</h3>
+					<h3>{{ ___("What's due today?") }} <a href="/browse/due/today">. . .</a></h3>
 
 					<div v-for="task in tasks.due" class="row dashboard-item dashboard-item-due">
 						<div class="col-md-1 task-entry-lead">
@@ -42,7 +42,7 @@
 
 				<div class="col-md-6 dashboard-section">
 
-					<h3>{{ ___("What's late?") }}</h3>
+					<h3>{{ ___("What's late?") }} <a href="/browse/late">. . .</a></h3>
 
 					<div v-for="task in tasks.late" class="row dashboard-item dashboard-item-late">
 						<div class="col-md-1 task-entry-lead">
@@ -73,7 +73,7 @@
 
 				<div class="col-md-6 dashboard-section">
 
-					<h3>{{ ___("What should I follow-up?") }}</h3>
+					<h3>{{ ___("What should I follow-up?") }} <a href="/browse/followups/today">. . .</a></h3>
 
 					<div v-for="task in tasks.followups" class="row dashboard-item dashboard-item-followup">
 						<div class="col-md-1 task-entry-lead">
@@ -115,7 +115,7 @@
 
 				<div class="col-md-6 dashboard-section">
 
-					<h3>{{ ___("What's in the pipeline?") }}</h3>
+					<h3>{{ ___("What's in the pipeline?") }} <a href="/browse/pipeline/today">. . .</a></h3>
 
 					<div v-for="task in tasks.pipeline" class="row dashboard-item dashboard-item-pipeline">
 						<div class="col-md-1 task-entry-lead">

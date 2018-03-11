@@ -128,6 +128,7 @@ var vm = new Vue({
 			);
 
 		},
+
 		cancelTask : function ( task ) {
 
 			if ( alertConfirm( ___t('Cancel?') ) ) {
@@ -151,6 +152,30 @@ var vm = new Vue({
 				);
 
 			}
+
+		},
+
+		reprioritiseTask : function ( task ) {
+
+			var priority = prompt("priority:", task.priority);
+
+			if ( !priority ) { return; }
+			
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, priority : priority, action : 'reprioritise' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTasks();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
 
 		},
 

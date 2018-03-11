@@ -73,6 +73,7 @@
 						</div>
 						<div class="task-entry-controls">
 							<button class="btn btn-sm btn-secondary" @click="completeTask(task)">{{ ___('Done') }}</button>
+							<button class="btn btn-sm btn-secondary" @click="reprioritiseTask(task)">{{ ___('Re-prioritise') }}</button>
 							<button class="btn btn-sm btn-secondary" @click="rescheduleTask(task)">{{ ___('Re-schedule') }}</button>
 							<button class="btn btn-sm btn-secondary" @click="reassignTask(task)">{{ ___('Re-assign') }}</button>
 							<button class="btn btn-sm btn-secondary" @click="followupTask(task)">{{ ___('Follow-up') }}</button>

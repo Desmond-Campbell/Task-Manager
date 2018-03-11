@@ -4,7 +4,7 @@ var vm = new Vue({
 	
 	data : { 
 						id : 0, 
-						task : { title : '', task_items : [], followups : [] },
+						task : { title : '', task_items : [], task_items_completed : [],followups : [] },
 						taskItemEditId : -1, 
 						followupEditId : -1,
 						editMode : 'details', 
@@ -40,7 +40,7 @@ var vm = new Vue({
 
 			} else {
 
-				this.task = { title : '', task_items : [], followups : [] };
+				this.task = { title : '', task_items : [], task_items_completed : [],followups : [] };
 
 			}
 
@@ -62,7 +62,36 @@ var vm = new Vue({
 						vm.followupEditId = -1;
 						vm.id = response.data.task.id;
 
+						vm.fetchTask();
+
 						alertSuccess( ___t('Saved.') );
+
+					}
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		saveNotes : function (notes) {
+
+			axios.post( '/api/tasks/' + this.id + '/save-notes', { notes : notes } ).then( 
+
+				function ( response ) {
+
+					if ( typeof response.data.errors !== 'undefined' ) {
+
+						alertError( response.data.errors );
+
+					} else {
+
 
 					}
 
@@ -94,7 +123,7 @@ var vm = new Vue({
 
 							vm.followupEditId = -1;
 							vm.id = 0;
-							vm.task = { title : '', task_items : [], followups : [] };
+							vm.task = { title : '', task_items : [], task_items_completed : [],followups : [] };
 
 						}
 
@@ -179,6 +208,202 @@ var vm = new Vue({
 			}
 
 		},
+
+
+		/****************/
+
+		completeTask : function ( task ) {
+
+			if ( alertConfirm( ___t('Done?') ) ) {
+
+				axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'complete' } ).then( 
+
+					function ( response ) {
+
+						vm.fetchTask();
+
+					},
+
+					function () {
+
+						alertError( general_error_failure );
+
+					}
+
+				);
+
+			}
+
+		},
+
+		followupTask : function ( task ) {
+
+			var followup_action = prompt("Follow-up action:", "");
+			var due = prompt("Due date and time:", "");
+	
+			if ( !action || !due ) { return; }
+
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, followup_action : followup_action, due : due, action : 'followup' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTask();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		rescheduleTask : function ( task ) {
+
+			var due = prompt("Due date and time:", "");
+
+			if ( !due ) { return; }
+			
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, due : due, action : 'reschedule' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTask();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		reassignTask : function ( task ) {
+
+			var assignees = prompt("Assignees:", "");
+
+			if ( !assignees ) { return; }
+			
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, assignees : assignees, action : 'reassign' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTask();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		reprioritiseTask : function ( task ) {
+
+			var priority = prompt("priority:", task.priority);
+
+			if ( !priority ) { return; }
+			
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, priority : priority, action : 'reprioritise' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTask();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		completeTaskItem : function ( task_item ) {
+
+			if ( alertConfirm( ___t('Done?') ) ) {
+
+				axios.post( '/api/tasks/' + vm.task.id + '/action', { task_item : task_item, action : 'complete_task_item' } ).then( 
+
+					function ( response ) {
+
+						vm.fetchTask();
+
+					},
+
+					function () {
+
+						alertError( general_error_failure );
+
+					}
+
+				);
+
+			}
+
+		},
+
+		incompleteTaskItem : function ( task_item ) {
+
+			axios.post( '/api/tasks/' + vm.task.id + '/action', { task_item : task_item, action : 'incomplete_task_item' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTask();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+		
+		cancelTask : function ( task ) {
+
+			if ( alertConfirm( ___t('Cancel?') ) ) {
+
+				console.log('aaaaa')
+
+				axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'cancel' } ).then( 
+
+					function ( response ) {
+
+						vm.fetchTask();
+
+					},
+
+					function () {
+
+						alertError( general_error_failure );
+
+					}
+
+				);
+
+			}
+
+		},
+
+		/****************/
 
 		refresh : function () {
 

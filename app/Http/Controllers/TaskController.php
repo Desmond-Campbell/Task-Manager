@@ -33,10 +33,61 @@ class TaskController extends Controller
 
  		$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups')->find( $id );
 
+ 		if ( $task ) {
+
+ 			$task_items_complete = [];
+ 			$task_items_incomplete = [];
+
+ 			foreach ( $task->task_items as $item ) {
+
+ 				if ( $item->completed ) {
+
+ 					$task_items_complete[] = $item;
+
+ 				} else {
+
+ 					$task_items_incomplete[] = $item;
+
+ 				}
+
+ 			}
+
+ 			$task->task_items_incomplete = $task_items_incomplete;
+ 			$task->task_items_complete = $task_items_complete;
+
+ 		}
+
  		return response()->json( [ 'task' => $task ] );
 
  	}
 
+ 	public function saveTaskNotes( Request $R ) {
+
+ 		$id = $R->route('id', 0);
+ 		$project_id = get_project_id();
+ 		$user_id = get_user_id();
+
+ 		$notes = $R->input('notes');
+
+ 		$task = null;
+
+ 		if ( $id ) {
+
+ 			$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->find( $id );
+
+ 			if ( !$task ) $task = null;
+
+ 		}
+
+ 		if ( $task ) {
+
+ 			$task->notes = $notes;
+ 			$task->save();
+ 			
+ 		}
+
+ 	}
+ 	
  	public function updateTask( Request $R ) {
 
  		$id = $R->route('id', 0);
@@ -45,7 +96,7 @@ class TaskController extends Controller
 
  		$title = $R->input('title');
  		$description = $R->input('description');
- 		$priority = (float) $R->input('priority');
+ 		$priority = (float) $R->input('priority', 50);
  		$start_date = $R->input('start_date');
  		$start_time = $R->input('start_time');
  		$due_date = $R->input('due_date');
@@ -84,7 +135,7 @@ class TaskController extends Controller
  		$priority_list = [];
 		
 		foreach ( $task_items as $key => $row ){
-			$priority_list[$key] = $row['priority'];
+			$priority_list[$key] = $row['priority'] ?? rand ( 40, 60 );
 		}
  		
  		array_multisort( $priority_list, SORT_ASC, $task_items );
@@ -102,6 +153,7 @@ class TaskController extends Controller
 
 	 				$task_item['task_id'] = $task->id;
 	 				$task_item['user_id'] = $user_id;
+	 				$task_item['priority'] = $task_item['priority'] ?? 50;
 
 	 				TaskItem::create( $task_item );
 
@@ -227,6 +279,13 @@ class TaskController extends Controller
 
  					break;
 
+ 					case 'incomplete':
+
+ 						$task->completed = 0;
+ 						$task->save();
+
+ 					break;
+
  					case 'cancel':
 
  						$task->delete();
@@ -266,6 +325,39 @@ class TaskController extends Controller
 
  						$task->assignees = $R->input('assignees');
  						$task->save();
+
+ 					break;
+
+ 					case 'reprioritise':
+
+ 						$task->priority = $R->input('priority');
+ 						$task->save();
+
+ 					break;
+
+ 					case 'complete_task_item':
+
+ 						$task_item_record = TaskItem::where('user_id', $user_id)->find($R->input('task_item')['id'] ?? 0);
+
+ 						if ( $task_item_record ) {
+	 					
+	 						$task_item_record->completed = 1;
+	 						$task_item_record->save();
+
+	 					}
+
+ 					break;
+
+ 					case 'incomplete_task_item':
+
+ 						$task_item_record = TaskItem::where('user_id', $user_id)->find($R->input('task_item')['id'] ?? 0);
+
+ 						if ( $task_item_record ) {
+	 					
+	 						$task_item_record->completed = 0;
+	 						$task_item_record->save();
+
+	 					}
 
  					break;
 
@@ -386,7 +478,7 @@ class TaskController extends Controller
 		if ( in_array( $sort['field'] ?? 'priority', [ 'priority', 'completion' ] ) ) {
 
 			$sort_field = $sort['field'];
-			$sort_order = $sort['order'] ?? 'asc' == 'desc' ? 'desc' : 'asc';
+			$sort_order = ( $sort['order'] ?? 'asc' ) == 'desc' ? 'desc' : 'asc';
 
 			$tasks = $tasks->orderBy( $sort_field, $sort_order );
 
@@ -420,7 +512,7 @@ class TaskController extends Controller
  		if ( in_array( $sort['field'] ?? 'priority', [ 'priority', 'completion' ] ) ) {
 
 			$sort_field = $sort['field'];
-			$sort_order = $sort['order'] ?? 'asc' == 'desc' ? 'desc' : 'asc';
+			$sort_order = ( $sort['order'] ?? 'asc' ) == 'desc' ? 'desc' : 'asc';
 
 			$tasks = $tasks->orderBy( $sort_field, $sort_order );
 
@@ -462,7 +554,7 @@ class TaskController extends Controller
  		if ( in_array( $sort['field'] ?? 'priority', [ 'priority', 'completion' ] ) ) {
 
 			$sort_field = $sort['field'];
-			$sort_order = $sort['order'] ?? 'asc' == 'desc' ? 'desc' : 'asc';
+			$sort_order = ( $sort['order'] ?? 'asc' ) == 'desc' ? 'desc' : 'asc';
 
 			$tasks = $tasks->orderBy( $sort_field, $sort_order );
 
@@ -512,7 +604,7 @@ class TaskController extends Controller
  		if ( in_array( $sort['field'] ?? 'priority', [ 'priority', 'completion' ] ) ) {
 
 			$sort_field = $sort['field'];
-			$sort_order = $sort['order'] ?? 'asc' == 'desc' ? 'desc' : 'asc';
+			$sort_order = ( $sort['order'] ?? 'asc' ) == 'desc' ? 'desc' : 'asc';
 
 			$tasks = $tasks->orderBy( $sort_field, $sort_order );
 

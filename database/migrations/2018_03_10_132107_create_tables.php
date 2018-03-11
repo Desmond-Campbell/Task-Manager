@@ -33,6 +33,7 @@ class CreateTables extends Migration
             $table->time('start_time')->nullable();
             $table->date('due_date')->nullable();
             $table->time('due_time')->nullable();
+            $table->text('notes')->nullable();
             $table->text('assignees')->nullable();
             $table->text('customers')->nullable();
             $table->text('categories')->nullable();
