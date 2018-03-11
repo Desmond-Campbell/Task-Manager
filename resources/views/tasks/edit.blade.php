@@ -146,13 +146,13 @@
 							<tr v-if="taskItemEditId != i && !task_item.deleted && !newTaskItemMode">
 								<td width="20%">@{{task_item.priority}}</td>
 								<td>@{{task_item.title}}</td>
-								<td><a href="#" @click="taskItemEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i)"><i class="fa fa-trash"></i></a></td>
+								<td><a href="#" @click="taskItemEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i); newTaskItemMode = false"><i class="fa fa-trash"></i></a></td>
 							</tr>
 
 							<tr v-if="taskItemEditId == i">
 								<td width="20%"><input type="text" class="form-control input-sm" v-model="task_item.priority" /></td>
 								<td><input type="text" class="form-control input-sm" v-model="task_item.title" /></td>
-								<td><a href="#" @click="taskItemEditId = -1; newTaskItemMode = false"><i class="fa fa-check"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i)"><i class="fa fa-trash"></i></a></td>
+								<td><a href="#" @click="taskItemEditId = -1; newTaskItemMode = false"><i class="fa fa-check"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i); newTaskItemMode = false"><i class="fa fa-trash"></i></a></td>
 							</tr>
 
 						</tbody>
