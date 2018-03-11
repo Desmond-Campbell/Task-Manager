@@ -6,6 +6,7 @@ var vm = new Vue({
 						period : 'today',
 						tasks : [],
 						mode : 'due',
+						query : '',
 						sort : { field : 'priority', order : 'asc', show_completed : false } 
 					},
 	
@@ -13,7 +14,15 @@ var vm = new Vue({
 
 		fetchTasks : function () {
 
-			axios.post( '/api/tasks/' + this.mode + '/' + this.period, { sort : this.sort } ).then( 
+			$url = '/api/tasks/' + this.mode + '/' + this.period;
+
+			if ( vm.mode == 'search' ) {
+
+				$url = '/search/' + this.query;
+
+			}
+
+			axios.post( $url, { sort : this.sort } ).then( 
 
 				function ( response ) {
 
@@ -179,6 +188,77 @@ var vm = new Vue({
 
 		},
 
+		completeFollowup : function ( followup ) {
+
+			if ( alertConfirm( ___t('Done?') ) ) {
+
+				axios.post( '/api/tasks/' + followup.task_id + '/action', { followup : followup, action : 'complete_followup' } ).then( 
+
+					function ( response ) {
+
+						vm.fetchTasks();
+
+					},
+
+					function () {
+
+						alertError( general_error_failure );
+
+					}
+
+				);
+
+			}
+
+		},
+
+		rescheduleFollowup : function ( followup ) {
+
+			var due = prompt("Due date and time:", "");
+
+			if ( !due ) { return; }
+			
+			axios.post( '/api/tasks/' + followup.task_id + '/action', { followup : followup, due : due, action : 'reschedule_followup' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTasks();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		cancelFollowup : function ( followup ) {
+
+			if ( alertConfirm( ___t('Done?') ) ) {
+
+				axios.post( '/api/tasks/' + followup.task_id + '/action', { followup : followup, action : 'cancel_followup' } ).then( 
+
+					function ( response ) {
+
+						vm.fetchTasks();
+
+					},
+
+					function () {
+
+						alertError( general_error_failure );
+
+					}
+
+				);
+
+			}
+
+		},
 		getTasks : function (period) {
 
 			vm.period = period;

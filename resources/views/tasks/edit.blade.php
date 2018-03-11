@@ -2,7 +2,7 @@
 
 @section('title')
 
-{{ ___('Edit Task') }}
+{{ $title ?? ___('New Task') }}
 
 @stop
 
@@ -10,39 +10,42 @@
 
 <div id="TaskController">
 
-	<h1><span class="badge badge-default">@{{ task.priority }}</span> <span class="badge badge-info">@{{ task.completion }}%</span> @{{ task.title }} <button class="btn btn-md btn-success" @click="updateTask()">{{___('Save')}}</button> <button class="btn btn-md btn-danger" @click="deleteTask()"><i class="fa fa-trash"></i></button></h1>
+	<h1>@{{ task.title }}</h1>
+
+	<div class="task-title-controls">
+		<h4><span class="badge badge-default">@{{ task.priority }}</span> <span class="badge badge-info">@{{ task.completion }}%</span> <button class="btn btn-sm btn-secondary" @click="updateTask()">{{___('Save')}}</button> <button class="btn btn-sm btn-secondary" @click="deleteTask()"><i class="fa fa-trash"></i></button></h4>
+	</div>
 
 	<br />
 
 	<ul class="filter-menu">
-		<li><a href="#" @click="editMode = 'view'">{{___('View')}}</a></li>
-		<li><a href="#" @click="editMode = 'details'">{{___('Details')}}</a></li>
-		<li><a href="#" @click="editMode = 'task_items'">{{___('Task Items')}}</a></li>
-		<li><a href="#" @click="editMode = 'followups'">{{___('Followups')}}</a></li>
+		<li :class="{ 'active' : editMode == 'view' }"><a href="#" @click="editMode = 'view'">{{___('View')}}</a></li>
+		<li :class="{ 'active' : editMode == 'details' }"><a href="#" @click="editMode = 'details'">{{___('Edit')}}</a></li>
+		<li :class="{ 'active' : editMode == 'task_items' }"><a href="#" @click="editMode = 'task_items'">{{___('Task Items')}}</a></li>
+		<li :class="{ 'active' : editMode == 'followups' }"><a href="#" @click="editMode = 'followups'">{{___('Followups')}}</a></li>
 	</ul>
 
 	<div class="row">
 
 		<div class="col-md-6">
 
-			<div v-show="editMode == 'view'">
+			<p>
+				{{ ___('Due') }}: <strong>@{{ task.due_date | moment( "MMMM D" ) }} {{__('at')}} @{{ task.due_date + ' ' + task.due_time | moment( "h:mm a" )  }}</strong> | {{ ___('Starts') }}: <strong>@{{ task.start_date | moment( "MMMM D" ) }} {{__('at')}} @{{ task.start_date + ' ' + task.start_time | moment( "h:mm a" )  }}</strong>
+			</p>
 
-				<p>
-					{{ ___('Starts') }} <strong>@{{ task.start_date }} @{{ task.start_time }}</strong><br />
-					{{ ___('Due') }} <strong>@{{ task.due_date }} @{{ task.due_time }}</strong>
-				</p>
+			<div class="view-task-controls">
+				<button class="btn btn-secondary btn-sm" @click="completeTask(task)">{{___('Done')}}</button>
+				<button class="btn btn-secondary btn-sm" @click="rescheduleTask(task)">{{___('Reschedule')}}</button>
+				<button class="btn btn-secondary btn-sm" @click="followupTask(task)">{{___('Follow-up')}}</button>
+				<button class="btn btn-secondary btn-sm" @click="reprioritiseTask(task)">{{___('Reprioritise')}}</button>
+				<button class="btn btn-secondary btn-sm" @click="cancelTask(task)">{{___('Cancel')}}</button>
+			</div>
 
-				<div class="view-task-controls">
-					<button class="btn btn-secondary btn-sm" @click="completeTask(task)">{{___('Done')}}</button>
-					<button class="btn btn-secondary btn-sm" @click="rescheduleTask(task)">{{___('Reschedule')}}</button>
-					<button class="btn btn-secondary btn-sm" @click="followupTask(task)">{{___('Follow-up')}}</button>
-					<button class="btn btn-secondary btn-sm" @click="reprioritiseTask(task)">{{___('Reprioritise')}}</button>
-					<button class="btn btn-secondary btn-sm" @click="cancelTask(task)">{{___('Cancel')}}</button>
-				</div>
+			<div class="task-view-info push-down">
+				@{{ task.customers }} / @{{ task.categories }} / @{{ task.features }}
+			</div>
 
-				<div class="task-view-info push-down">
-					@{{ task.customers }} / @{{ task.categories }} / @{{ task.features }}
-				</div>
+			<div v-show="editMode == 'view'" class="push-down">
 
 				<div class="task-view-description">
 					@{{ task.description }}
@@ -52,7 +55,7 @@
 					
 					<div v-for="( task_item, t ) in task.task_items_incomplete" class="task-view-task-item">
 
-						<span @click="completeTaskItem(task_item)" class="clickable"><i class="far fa-square"></i> &nbsp; @{{ task_item.priority }} - @{{ task_item.title }}</span>
+						<span @click="completeTaskItem(task_item)" class="clickable"><i class="far fa-square"></i> &nbsp; <span class="badge badge-warning">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }}</span>
 
 					</div>
 
@@ -60,7 +63,7 @@
 
 					<div v-for="( task_item, t ) in task.task_items_complete" class="task-view-task-item">
 
-						<span @click="incompleteTaskItem(task_item)" class="clickable"><i class="fa fa-check-square"></i> &nbsp; @{{ task_item.priority }} - @{{ task_item.title }}</span>
+						<span @click="incompleteTaskItem(task_item)" class="clickable"><i class="fa fa-check-square"></i> &nbsp; <span class="badge badge-success">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }}</span>
 
 					</div>
 
@@ -68,7 +71,7 @@
 
 			</div>
 
-			<div v-show="editMode == 'details'">
+			<div v-show="editMode == 'details'" class="push-down">
 
 				<input type="hidden" name="task_id" id="task_id" value="{{ $task_id ?? 0 }}" />
 
@@ -125,33 +128,56 @@
 
 			</div>
 
-			<div v-show="editMode == 'task_items'">
+			<div v-show="editMode == 'task_items'" class="push-down">
 
-				<button class="btn btn-primary" @click="addTaskItem()"><i class="fa fa-plus"></i></button>
+				<div v-show="taskItemEditMode == 'regular'">
 
-				<table class="table no-borders striped push-down" v-if="task.task_items.length > 0">
+					<button class="btn btn-primary" @click="addTaskItem()"><i class="fa fa-plus"></i></button> &nbsp;
+					<button class="btn btn-warning" @click="taskItemEditMode = 'bulk'; refresh()"><i class="fa fa-plus-square"></i></button>
 
-					<tbody v-for="(task_item, i) in task.task_items">
+					<table class="table no-borders striped push-down" v-if="task.task_items.length > 0">
 
-						<tr v-if="taskItemEditId != i && !task_item.deleted">
-							<td width="20%">@{{task_item.priority}}</td>
-							<td>@{{task_item.title}}</td>
-							<td><a href="#" @click="taskItemEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i)"><i class="fa fa-trash"></i></a></td>
-						</tr>
+						<tbody v-for="(task_item, i) in task.task_items">
 
-						<tr v-if="taskItemEditId == i">
-							<td width="20%"><input type="text" class="form-control input-sm" v-model="task_item.priority" /></td>
-							<td><input type="text" class="form-control input-sm" v-model="task_item.title" /></td>
-							<td><a href="#" @click="taskItemEditId = -1"><i class="fa fa-check"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i)"><i class="fa fa-trash"></i></a></td>
-						</tr>
+							<tr v-if="taskItemEditId != i && !task_item.deleted">
+								<td width="20%">@{{task_item.priority}}</td>
+								<td>@{{task_item.title}}</td>
+								<td><a href="#" @click="taskItemEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i)"><i class="fa fa-trash"></i></a></td>
+							</tr>
 
-					</tbody>
+							<tr v-if="taskItemEditId == i">
+								<td width="20%"><input type="text" class="form-control input-sm" v-model="task_item.priority" /></td>
+								<td><input type="text" class="form-control input-sm" v-model="task_item.title" /></td>
+								<td><a href="#" @click="taskItemEditId = -1"><i class="fa fa-check"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i)"><i class="fa fa-trash"></i></a></td>
+							</tr>
 
-				</table>
+						</tbody>
+
+					</table>
+
+				</div>
+
+				<div v-show="taskItemEditMode == 'bulk'">
+
+					<button class="btn btn-primary" @click="taskItemEditMode = 'regular'; refresh()"><i class="fa fa-plus"></i></button> &nbsp;
+					<button class="btn btn-secondary" @click="taskItemEditMode = 'regular'; refresh()"><i class="fa fa-chevron-left"></i></button>
+
+					<br />
+
+					<div class="form-group push-down">
+						<textarea class="form-control" style="padding: 25px; font-size: 85%; border:none; border-top: dotted 1px #ccc" rows="20" v-model="task_items_bulk"></textarea>
+					</div>
+
+					<div class="form-group">
+						<button class="btn btn-success" @click="addTaskItemsBulk()">{{___('Save')}}</button>
+						<button class="btn btn-warning" @click="task_items_bulk = ''; taskItemEditMode = 'regular'; refresh()">{{___('Cancel')}}</button>
+					</div>
+
+				</div>
 
 			</div>
 
-			<div v-show="editMode == 'followups'">
+			<div v-show="editMode == 'followups'" class="push-down">
 
 				<button class="btn btn-primary" @click="addFollowup()"><i class="fa fa-plus"></i></button>
 
@@ -185,7 +211,8 @@
 
 		<div class="col-md-6 task-notes">
 
-			<textarea class="form-control" style="padding: 25px; font-size: 85%" rows="20" v-model="task.notes" @change="saveNotes(task.notes)" @blur="saveNotes(task.notes)"></textarea>
+			<h6>{{___('Notes')}}</h6>
+			<textarea class="form-control" style="padding: 0px; padding-right: 25px; font-size: 85%; border:none" rows="30" v-model="task.notes" @change="saveNotes(task.notes)" @blur="saveNotes(task.notes)"></textarea>
 
 		</div>
 

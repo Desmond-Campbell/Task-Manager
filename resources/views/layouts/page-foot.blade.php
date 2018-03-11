@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/vue/dist/vue.js"></script>    
     @yield('javascript-controllers-pre')
     <script src="/js/vendor/axios.js"></script>    
+    <script src="/js/vendor/moment.js"></script>    
     <script src="https://unpkg.com/vuetify/dist/vuetify.min.js"></script>
     <script src="/js/app.js"></script>
     @yield('javascript-controllers')

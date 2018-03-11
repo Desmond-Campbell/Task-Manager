@@ -33,6 +33,17 @@ Route::post('/api/tasks/followups/{when}', 'TaskController@apiBrowseFollowups');
 Route::get('/api/tasks/{id}/get', 'TaskController@getTask');
 Route::post('/api/tasks/{id}/update', 'TaskController@updateTask');
 Route::post('/api/tasks/{id}/save-notes', 'TaskController@saveTaskNotes');
+Route::post('/api/tasks/{id}/parse-items-bulk', 'TaskController@parseBulkItems');
 Route::delete('/api/tasks/{id}/delete', 'TaskController@deleteTask');
 
 Route::post('/api/tasks/{id}/action', 'TaskController@action');
+
+Route::get('/search/{query}', 'TaskController@search');
+Route::post('/search/{query}', 'TaskController@search');
+Route::get('/search', 'TaskController@searchResults');
+
+Route::get('/indx', function(){
+
+	\App\SearchIndex::rebuildIndex( 0, 1000 );
+
+});

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Task;
 use App\TaskItem;
 use App\TaskFollowup;
+use App\SearchIndex;
 
 class TaskController extends Controller
 {
@@ -20,10 +21,49 @@ class TaskController extends Controller
 
  		$task_id = $R->route('id', 0);
  		$user_id = get_user_id();
+
+ 		$title = Task::find( $task_id )->title ?? '';
  
- 		return view('tasks.edit', compact('task_id'));
+ 		return view('tasks.edit', compact('task_id', 'title'));
 
  	}
+
+ 	public function search( Request $R )
+  {
+
+    $query = $R->route('query');
+
+    $response = SearchIndex::whereRaw(
+        "MATCH(keywords) AGAINST(? IN BOOLEAN MODE)", 
+        [ '*' . $query . '*' ]
+    )->take( 50 )->get();
+
+    $results = [];
+
+    foreach ( $response as $r ) {
+
+      $t = Task::find( $r->task_id );
+
+      if ( $t ) {
+          $results[$t->title . $t->id] = $t;
+      }
+
+    }
+
+    ksort( $results );
+
+    return response()->json( [ 'tasks' => array_values( $results ), 'mode' => 'search', 'query' => $query ] );
+  
+  }
+
+  public function searchResults( Request $R )
+  {
+
+    $query = $R->route('query');
+
+    return view('tasks.search', compact('query'));
+  
+  }
 
  	public function getTask( Request $R ) {
 
@@ -31,7 +71,7 @@ class TaskController extends Controller
  		$user_id = get_user_id();
  		$project_id = get_project_id();
 
- 		$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups')->find( $id );
+ 		$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with([ 'task_items' => function ( $q ) { $q->orderBy('priority', 'asc'); }, 'followups' => function ( $q ) { $q->orderBy( 'due_date', 'asc' ); $q->orderBy( 'due_time', 'asc' ); }])->find( $id );
 
  		if ( $task ) {
 
@@ -83,7 +123,7 @@ class TaskController extends Controller
 
  			$task->notes = $notes;
  			$task->save();
- 			
+
  		}
 
  	}
@@ -361,6 +401,49 @@ class TaskController extends Controller
 
  					break;
 
+ 					case 'complete_followup':
+
+ 						$followup_record = TaskFollowup::where('user_id', $user_id)->find($R->input('followup')['id'] ?? 0);
+
+						if ( $followup_record ) {
+ 		
+ 							$followup_record->completed = 1;
+ 							$followup_record->save();
+
+ 						}
+
+ 					break;
+
+					case 'cancel_followup':
+
+ 						$followup_record = TaskFollowup::where('user_id', $user_id)->find($R->input('followup')['id'] ?? 0);
+
+						if ( $followup_record ) {
+ 		
+ 							$followup_record->delete();
+
+ 						}
+
+ 					break;
+
+					case 'reschedule_followup':
+
+ 						$followup_record = TaskFollowup::where('user_id', $user_id)->find($R->input('followup')['id'] ?? 0);
+
+						if ( $followup_record ) {
+ 		
+ 							$followup_due = explode( ' ', $R->input('due') );
+ 							$followup_due_date = ( $followup_due[0] ?? '' ) ?? 'tomorrow';
+ 							$followup_due_time = ( $followup_due[1] ?? '' ) ?? '13:00:00';
+	 						$followup_record->due_date = Carbon::parse( $followup_due_date )->toDateString();
+	 						$followup_record->due_time = Carbon::parse( $followup_due_time )->toTimeString();
+
+	 						$followup_record->save();
+
+ 						}
+
+ 					break;
+
  				}
 
  			}
@@ -581,7 +664,7 @@ class TaskController extends Controller
 
  		$due_date = Carbon::now()->toDateString();
 
-	 	$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('followups');
+	 	$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with(['followups' => function ( $q ) { $q->where('completed', 0 ); }] );
 
 	 	if ( $when != 'late' ) {
 
@@ -589,6 +672,7 @@ class TaskController extends Controller
 																									use ( $due_date ) 
 																								{
 																									$q->where('due_date', $due_date );
+																									$q->where('completed', 0 );
 																								} );
 
 		} else {
@@ -597,6 +681,7 @@ class TaskController extends Controller
 																									use ( $due_date ) 
 																								{
 																									$q->where('due_date', '<', $due_date );
+																									$q->where('completed', 0 );
 																								} );
 
 		}
@@ -619,6 +704,49 @@ class TaskController extends Controller
  		$tasks = $tasks->get();
 
  		return response()->json( [ 'tasks' => $tasks, 'mode' => 'followups' ] );
+
+ 	}
+
+ 	public function parseBulkItems( Request $R ) {
+
+ 		$items = $R->input('task_items');
+
+ 		if ( !$items ) return response()->json( [] );
+
+ 		$items = explode( "\n", $items );
+ 		$task_items = [];
+
+ 		foreach ( $items as $item ) {
+
+ 			$item_parts = explode( ' ', $item );
+
+ 			if ( count( $item_parts ) > 1 ) {
+
+ 				$priority = is_numeric( $item_parts[0] ) ? $item_parts[0] : '';
+
+ 				if ( $priority ) {
+
+	 				$title = trim( str_replace( $priority, '', $item ) );
+	 				$priority = (float) $priority;
+
+	 			} else {
+
+	 				$title = $item;
+
+	 			}
+
+ 			} else {
+
+ 				$priority = '';
+ 				$title = $item;
+
+ 			}
+
+ 			$task_items[] = [ 'priority' => $priority, 'title' => $title ];
+
+ 		}
+
+ 		return response()->json( $task_items );
 
  	}
 

@@ -2,7 +2,7 @@
 
 @section('title')
 
-{{ ___("Due") }}
+{{ ___("Search Results") }}
 
 @stop
 
@@ -10,18 +10,9 @@
 
 <div id="BrowseController">
 
-	<h1>{{ ___("What's Due") }}</h1>
+	<h2>{{ ___("Results for") }} {{ request('query') }}</h2>
 
-	<ul class="filter-menu">
-		<li><a href="#" @click="getTasks('today')">{{___('Today')}}</a></li>
-		<li><a href="#" @click="getTasks('tomorrow')">{{___('Tomorrow')}}</a></li>
-		<li><a href="#" @click="getTasks('this week')">{{___('This Week')}}</a></li>
-		<li><a href="#" @click="getTasks('next week')">{{___('Next Week')}}</a></li>
-		<li><a href="#" @click="getTasks('this month')">{{___('This Month')}}</a></li>
-		<li><a href="#" @click="getTasks('next month')">{{___('Next Month')}}</a></li>
-	</ul>
-
-	<div class="row">
+	{{-- <div class="row">
 
 		<div class="col-md-8">
 			<a href="#" @click="sortBy('priority')">
@@ -48,7 +39,7 @@
 
 		</div>
 
-	</div>
+	</div> --}}
 
 	<div class="row">
 
@@ -101,5 +92,5 @@
 
 @section('javascript-controllers')
 <script type="text/javascript" src="/js/controllers/BrowseController.js"></script>
-<script type="text/javascript">vm.mode = 'due'; vm.fetchTasks(); </script>
+<script type="text/javascript">vm.mode = 'search'; vm.query = "{{ request('query') }}"; vm.fetchTasks(); </script>
 @stop

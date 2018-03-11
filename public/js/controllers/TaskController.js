@@ -4,10 +4,12 @@ var vm = new Vue({
 	
 	data : { 
 						id : 0, 
-						task : { title : '', task_items : [], task_items_completed : [],followups : [] },
+						task : { title : '', task_items : [], task_items_completed : [], followups : [] },
+						task_items_bulk : [],
 						taskItemEditId : -1, 
 						followupEditId : -1,
 						editMode : 'details', 
+						taskItemEditMode : 'regular'
 					},
 	
 	methods : {
@@ -65,6 +67,41 @@ var vm = new Vue({
 						vm.fetchTask();
 
 						alertSuccess( ___t('Saved.') );
+
+					}
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		addTaskItemsBulk : function () {
+
+			axios.post( '/api/tasks/' + this.id + '/parse-items-bulk', { task_items : this.task_items_bulk } ).then( 
+
+				function ( response ) {
+
+					if ( typeof response.data.errors !== 'undefined' ) {
+
+						alertError( response.data.errors );
+
+					} else {
+
+						for ( i = 0; i < response.data.length; i++ ) {
+
+							vm.task.task_items.push( response.data[i] );
+
+						}
+
+						vm.task_items_bulk = '';
+						vm.taskItemEditMode = 'regular';
 
 					}
 
@@ -419,5 +456,12 @@ var vm = new Vue({
 		this.fetchTask();
 
 	},
+
+	filters : {
+	  moment: function (date, format) {
+	    return moment(date).format(format);
+	  }
+	}
+
 
 });

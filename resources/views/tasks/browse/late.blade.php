@@ -54,7 +54,7 @@
 					</div>
 					<div class="col-md-10">
 						<div class="task-entry-title">
-							<a :href="'/edit/' + task.id + '?view_mode=true'">@{{ task.title }}</a> <a :href="'/edit/' + task.id"><i class="fa fa-edit"></i></a>
+							<a :href="'/edit/' + task.id">@{{ task.title }}</a>
 						</div>
 						<div class="task-entry-description">
 							@{{ task.customers }} / @{{ task.categories }} / @{{ task.features }}

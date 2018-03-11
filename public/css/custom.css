@@ -26,6 +26,14 @@ body {
 	margin-right: 15px;
 }
 
+.filter-menu li.active {
+	font-weight: bold;
+}
+
+.filter-menu li.active a {
+	color: #093D6E;
+}
+
 .task-entry {
 	margin-top: 10px;
 	margin-bottom: 20px;
