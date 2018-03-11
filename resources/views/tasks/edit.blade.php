@@ -13,7 +13,7 @@
 	<h1>@{{ task.title }}</h1>
 
 	<div class="task-title-controls">
-		<h4><span class="badge badge-default">@{{ task.priority }}</span> <span class="badge badge-info">@{{ task.completion }}%</span> <button class="btn btn-sm btn-secondary" @click="updateTask()">{{___('Save')}}</button> <button class="btn btn-sm btn-secondary" @click="deleteTask()"><i class="fa fa-trash"></i></button></h4>
+		<h4><span class="badge badge-default">@{{ task.priority }}</span> <span class="badge badge-info">@{{ task.completion }}%</span> <button class="btn btn-sm btn-secondary" @click="updateTask()">{{___('Save')}}</button> <button class="btn btn-sm btn-secondary" @click="deleteTask()"><i class="fa fa-trash"></i></button> <button class="btn btn-sm btn-secondary" @click="updateTask()">{{___('Save')}}</button> <button class="btn btn-sm btn-secondary" @click="task.expanded = !task.expanded; refresh()"><i class="fa fa-chevron-down" v-show="task.expanded"></i><i class="fa fa-chevron-up" v-show="!task.expanded"></i></button></h4>
 	</div>
 
 	<br />
@@ -29,20 +29,24 @@
 
 		<div class="col-md-6">
 
-			<p>
-				{{ ___('Due') }}: <strong>@{{ task.due_date | moment( "MMMM D" ) }} {{__('at')}} @{{ task.due_date + ' ' + task.due_time | moment( "h:mm a" )  }}</strong> | {{ ___('Starts') }}: <strong>@{{ task.start_date | moment( "MMMM D" ) }} {{__('at')}} @{{ task.start_date + ' ' + task.start_time | moment( "h:mm a" )  }}</strong>
-			</p>
+			<div v-show="task.expanded">
 
-			<div class="view-task-controls">
-				<button class="btn btn-secondary btn-sm" @click="completeTask(task)">{{___('Done')}}</button>
-				<button class="btn btn-secondary btn-sm" @click="rescheduleTask(task)">{{___('Reschedule')}}</button>
-				<button class="btn btn-secondary btn-sm" @click="followupTask(task)">{{___('Follow-up')}}</button>
-				<button class="btn btn-secondary btn-sm" @click="reprioritiseTask(task)">{{___('Reprioritise')}}</button>
-				<button class="btn btn-secondary btn-sm" @click="cancelTask(task)">{{___('Cancel')}}</button>
-			</div>
+				<p>
+					{{ ___('Due') }}: <strong>@{{ task.due_date | moment( "MMMM D" ) }} {{__('at')}} @{{ task.due_date + ' ' + task.due_time | moment( "h:mm a" )  }}</strong> | {{ ___('Starts') }}: <strong>@{{ task.start_date | moment( "MMMM D" ) }} {{__('at')}} @{{ task.start_date + ' ' + task.start_time | moment( "h:mm a" )  }}</strong>
+				</p>
 
-			<div class="task-view-info push-down">
-				@{{ task.customers }} / @{{ task.categories }} / @{{ task.features }}
+				<div class="view-task-controls">
+					<button class="btn btn-secondary btn-sm" @click="completeTask(task)">{{___('Done')}}</button>
+					<button class="btn btn-secondary btn-sm" @click="rescheduleTask(task)">{{___('Reschedule')}}</button>
+					<button class="btn btn-secondary btn-sm" @click="followupTask(task)">{{___('Follow-up')}}</button>
+					<button class="btn btn-secondary btn-sm" @click="reprioritiseTask(task)">{{___('Reprioritise')}}</button>
+					<button class="btn btn-secondary btn-sm" @click="cancelTask(task)">{{___('Cancel')}}</button>
+				</div>
+
+				<div class="task-view-info push-down">
+					@{{ task.customers }} / @{{ task.categories }} / @{{ task.features }}
+				</div>
+
 			</div>
 
 			<div v-show="editMode == 'view'" class="push-down">
@@ -165,7 +169,7 @@
 					<br />
 
 					<div class="form-group push-down">
-						<textarea class="form-control" style="padding: 25px; font-size: 85%; border:none; border-top: dotted 1px #ccc" rows="20" v-model="task_items_bulk"></textarea>
+						<textarea class="form-control" style="padding: 25px; font-size: 85%; border:none; border-top: dotted 1px #ccc" rows="10" v-model="task_items_bulk"></textarea>
 					</div>
 
 					<div class="form-group">
