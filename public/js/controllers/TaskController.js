@@ -9,7 +9,8 @@ var vm = new Vue({
 						taskItemEditId : -1, 
 						followupEditId : -1,
 						editMode : 'details', 
-						taskItemEditMode : 'regular'
+						taskItemEditMode : 'regular',
+						newTaskItemMode : false
 					},
 	
 	methods : {

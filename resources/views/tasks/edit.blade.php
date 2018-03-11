@@ -136,14 +136,14 @@
 
 				<div v-show="taskItemEditMode == 'regular'">
 
-					<button class="btn btn-primary" @click="addTaskItem()"><i class="fa fa-plus"></i></button> &nbsp;
+					<button class="btn btn-primary" @click="addTaskItem(); newTaskItemMode = true; refresh()"><i class="fa fa-plus"></i></button> &nbsp;
 					<button class="btn btn-warning" @click="taskItemEditMode = 'bulk'; refresh()"><i class="fa fa-plus-square"></i></button>
 
 					<table class="table no-borders striped push-down" v-if="task.task_items.length > 0">
 
 						<tbody v-for="(task_item, i) in task.task_items">
 
-							<tr v-if="taskItemEditId != i && !task_item.deleted">
+							<tr v-if="taskItemEditId != i && !task_item.deleted && !newTaskItemMode">
 								<td width="20%">@{{task_item.priority}}</td>
 								<td>@{{task_item.title}}</td>
 								<td><a href="#" @click="taskItemEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i)"><i class="fa fa-trash"></i></a></td>
@@ -152,7 +152,7 @@
 							<tr v-if="taskItemEditId == i">
 								<td width="20%"><input type="text" class="form-control input-sm" v-model="task_item.priority" /></td>
 								<td><input type="text" class="form-control input-sm" v-model="task_item.title" /></td>
-								<td><a href="#" @click="taskItemEditId = -1"><i class="fa fa-check"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i)"><i class="fa fa-trash"></i></a></td>
+								<td><a href="#" @click="taskItemEditId = -1; newTaskItemMode = false"><i class="fa fa-check"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i)"><i class="fa fa-trash"></i></a></td>
 							</tr>
 
 						</tbody>
