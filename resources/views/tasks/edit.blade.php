@@ -13,7 +13,7 @@
 	<h1>@{{ task.title }}</h1>
 
 	<div class="task-title-controls">
-		<h4><span class="badge badge-default">@{{ task.priority }}</span> <span class="badge badge-info">@{{ task.completion }}%</span> <button class="btn btn-sm btn-secondary" @click="updateTask()">{{___('Save')}}</button> <button class="btn btn-sm btn-secondary" @click="deleteTask()"><i class="fa fa-trash"></i></button> <button class="btn btn-sm btn-secondary" @click="updateTask()">{{___('Save')}}</button> <button class="btn btn-sm btn-secondary" @click="task.expanded = !task.expanded; refresh()"><i class="fa fa-chevron-down" v-show="task.expanded"></i><i class="fa fa-chevron-up" v-show="!task.expanded"></i></button></h4>
+		<h4><span class="badge badge-default">@{{ task.priority }}</span> <span class="badge badge-info">@{{ task.completion }}%</span> <button class="btn btn-sm btn-secondary" @click="updateTask()">{{___('Save')}}</button> <button class="btn btn-sm btn-secondary" @click="deleteTask()"><i class="fa fa-trash"></i></button> <button class="btn btn-sm btn-secondary" @click="task.expanded = !task.expanded; refresh()"><i class="fa fa-chevron-down" v-show="task.expanded"></i><i class="fa fa-chevron-up" v-show="!task.expanded"></i></button></h4>
 	</div>
 
 	<br />
