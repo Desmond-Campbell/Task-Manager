@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+Error
+@stop
+
+@section('contentX')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
