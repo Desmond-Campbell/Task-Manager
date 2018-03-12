@@ -10,7 +10,7 @@
 
 <div id="BrowseController">
 
-	<h1>{{ ___("What's in the Pipeline") }}</h1>
+	<h1>{{ ___("In the Pipeline") }}</h1>
 
 	<ul class="filter-menu">
 		<li><a href="#" @click="getTasks('today')">{{___('Today')}}</a></li>

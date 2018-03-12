@@ -59,24 +59,16 @@
 
       <nav class="n/avbar n/avbar-toggleable-md navbar-inverse bg-inverse fixed-top" style="padding: 10px;">
 
-        <a class="navbar-brand display-inline" href="/"> &nbsp; {{___('Tasks') }}</a>
-
-        &nbsp; &nbsp;
-
-              <a class="white-link display-inline" href="/"><i class="fa fa-bars"></i></a> | 
-              <a class="white-link display-inline" href="/new"><i class="fa fa-plus"></i></a> | 
-              <a class="white-link display-inline" href="/browse/due/today">{{___('Due')}}</a> | 
-              <a class="white-link display-inline" href="/browse/late">{{___('Late')}}</a> | 
-              <a class="white-link display-inline" href="/browse/pipeline/today">{{___('Pipeline')}}</a> | 
-              <a class="white-link display-inline" href="/browse/followups/today">{{___('F/ups')}}</a>
+        <a class="white-link display-inline" href="/"><i class="fa fa-bars"></i></a> | 
+        <a class="white-link display-inline" href="/new"><i class="fa fa-plus"></i></a> | 
+        <a class="white-link display-inline" href="/browse/due/today">{{___('Due')}}</a> | 
+        <a class="white-link display-inline" href="/browse/late">{{___('Late')}}</a> | 
+        <a class="white-link display-inline" href="/browse/pipeline/today">{{___('Pipeline')}}</a> | 
+        <a class="white-link display-inline" href="/browse/followups/today">{{___('F/ups')}}</a> &nbsp;
+        <a class="white-link display-inline" href="/search"><i class="fa fa-search"></i></a>
 
     
       </nav>
-
-      <form class="form-inline" action="/search" style="margin-top: -15px; margin-bottom: 20px">
-        <input class="form-control mr-sm-2" type="text" name="query" placeholder="{{___('Search')}}" value="{{ request('query') }}">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{{___('Search')}}</button>
-      </form>
 
     </div>
 

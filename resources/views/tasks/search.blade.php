@@ -10,7 +10,12 @@
 
 <div id="BrowseController">
 
-	<h2>{{ ___("Results for") }} {{ request('query') }}</h2>
+	<div style="padding: 10px">
+		<form class="form-inline" action="/search" style="margin-top: -15px; margin-bottom: 20px">
+	    <input class="form-control mr-sm-2" type="text" name="query" placeholder="{{___('Search')}}" value="{{ request('query') }}">
+	    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{{___('Search')}}</button>
+	  </form>
+	</div>
 
 	{{-- <div class="row">
 
