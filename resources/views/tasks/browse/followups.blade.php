@@ -13,8 +13,8 @@
 	<h1>{{ ___("For Follow-up") }}</h1>
 
 	<ul class="filter-menu">
-		<li><a href="#" @click="getTasks('today')">{{___('Today')}}</a></li>
-		<li><a href="#" @click="getTasks('late')">{{___('Outstanding')}}</a></li>
+		<li :class="{ 'active' : period == 'today' }"><a href="#" @click="getTasks('today')">{{___('Today')}}</a></li>
+		<li :class="{ 'active' : period == 'late' }"><a href="#" @click="getTasks('late')">{{___('Outstanding')}}</a></li>
 	</ul>
 
 	<div class="row">
@@ -40,7 +40,7 @@
 
 			&nbsp; &nbsp;
 	
-			<input type="checkbox" id="show-completed" v-model="sort.show_completed" :value="true" @click="fetchTasks();" /><label for="show-completed" @click="fetchTasks();"> &nbsp; {{___('Show completed tasks')}}</label>
+			<input type="checkbox" id="show-completed" v-model="sort.show_completed" :value="true" @click="fetchTasks();" /><label for="show-completed" @click="fetchTasks();"> &nbsp; {{___('Completed')}}</label>
 
 		</div>
 
@@ -90,11 +90,12 @@
 							@{{ task.due_date }} | @{{ task.due_time }}
 						</div>
 						<div class="task-entry-controls">
-							<button class="btn btn-sm btn-secondary" @click="completeTask(task)">{{ ___('Done') }}</button>
-							<button class="btn btn-sm btn-secondary" @click="rescheduleTask(task)">{{ ___('Re-schedule') }}</button>
-							<button class="btn btn-sm btn-secondary" @click="reassignTask(task)">{{ ___('Re-assign') }}</button>
-							<button class="btn btn-sm btn-secondary" @click="followupTask(task)">{{ ___('Follow-up') }}</button>
-							<button class="btn btn-sm btn-secondary" @click="cancelTask(task)">{{ ___('Cancel') }}</button>
+							<button class="btn btn-sm btn-secondary" @click="completeTask(task)"><i class="fa fa-check hidden-md-up"></i><span class="hidden-sm-down">{{ ___('Done') }}</span></button>
+							<button class="btn btn-sm btn-secondary" @click="reprioritiseTask(task)"><i class="fa fa-exclamation hidden-md-up"></i><span class="hidden-sm-down">{{ ___('Re-prioritise') }}</span></button>
+							<button class="btn btn-sm btn-secondary" @click="rescheduleTask(task)"><i class="fa fa-clock hidden-md-up"></i><span class="hidden-sm-down">{{ ___('Re-schedule') }}</span></button>
+							<button class="btn btn-sm btn-secondary" @click="reassignTask(task)"><i class="fa fa-user hidden-md-up"></i><span class="hidden-sm-down">{{ ___('Re-assign') }}</span></button>
+							<button class="btn btn-sm btn-secondary" @click="followupTask(task)"><i class="fa fa-share hidden-md-up"></i><span class="hidden-sm-down">{{ ___('Follow-up') }}</span></button>
+							<button class="btn btn-sm btn-secondary" @click="cancelTask(task)"><i class="fa fa-times hidden-md-up"></i><span class="hidden-sm-down">{{ ___('Cancel') }}</span></button>
 						</div>
 					</div>
 					<div class="col-md-1">
