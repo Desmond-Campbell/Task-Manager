@@ -22,8 +22,16 @@
 
 					<div v-for="task in tasks.due" class="row dashboard-item dashboard-item-due">
 						<div class="col-md-1 task-entry-lead">
-							<div class="task-entry-priority">@{{ task.priority }}</div>
-							<div class="task-entry-completion">@{{ task.completion }}%</div>
+							<div class="hidden-sm-down">
+								<div class="task-entry-priority">@{{ task.priority }}</div>
+								<div class="task-entry-completion">@{{ task.completion }}%</div>
+							</div>
+							<div class="hidden-md-up">
+								<div>
+									<span class="task-entry-priority">@{{ task.priority }}</span> &nbsp; 
+									<span class="task-entry-completion">@{{ task.completion }}%</span>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-10">
 							<div class="task-entry-title">
@@ -46,8 +54,16 @@
 
 					<div v-for="task in tasks.late" class="row dashboard-item dashboard-item-late">
 						<div class="col-md-1 task-entry-lead">
-							<div class="task-entry-priority">@{{ task.priority }}</div>
-							<div class="task-entry-completion">@{{ task.completion }}%</div>
+							<div class="hidden-sm-down">
+								<div class="task-entry-priority">@{{ task.priority }}</div>
+								<div class="task-entry-completion">@{{ task.completion }}%</div>
+							</div>
+							<div class="hidden-md-up">
+								<div>
+									<span class="task-entry-priority">@{{ task.priority }}</span> &nbsp; 
+									<span class="task-entry-completion">@{{ task.completion }}%</span>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-10">
 							<div class="task-entry-title">
@@ -77,8 +93,16 @@
 
 					<div v-for="task in tasks.followups" class="row dashboard-item dashboard-item-followup">
 						<div class="col-md-1 task-entry-lead">
-							<div class="task-entry-priority">@{{ task.priority }}</div>
-							<div class="task-entry-completion">@{{ task.completion }}%</div>
+							<div class="hidden-sm-down">
+								<div class="task-entry-priority">@{{ task.priority }}</div>
+								<div class="task-entry-completion">@{{ task.completion }}%</div>
+							</div>
+							<div class="hidden-md-up">
+								<div>
+									<span class="task-entry-priority">@{{ task.priority }}</span> &nbsp; 
+									<span class="task-entry-completion">@{{ task.completion }}%</span>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-10">
 							<div class="task-entry-title">
@@ -119,8 +143,16 @@
 
 					<div v-for="task in tasks.pipeline" class="row dashboard-item dashboard-item-pipeline">
 						<div class="col-md-1 task-entry-lead">
-							<div class="task-entry-priority">@{{ task.priority }}</div>
-							<div class="task-entry-completion">@{{ task.completion }}%</div>
+							<div class="hidden-sm-down">
+								<div class="task-entry-priority">@{{ task.priority }}</div>
+								<div class="task-entry-completion">@{{ task.completion }}%</div>
+							</div>
+							<div class="hidden-md-up">
+								<div>
+									<span class="task-entry-priority">@{{ task.priority }}</span> &nbsp; 
+									<span class="task-entry-completion">@{{ task.completion }}%</span>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-10">
 							<div class="task-entry-title">

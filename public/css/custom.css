@@ -115,6 +115,14 @@ body {
 	cursor: pointer;
 }
 
+.display-inline {
+	display: inline !important;
+}
+
+.white-link {
+	color: #FFF !important;
+}
+
 .full-width {
 	width: 100%;
 }

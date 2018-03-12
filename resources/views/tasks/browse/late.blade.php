@@ -48,11 +48,18 @@
 			<div v-for="( task, t ) in tasks">
 
 				<div class="row task-entry">
-					<div class="col-md-1 task-entry-lead">
+					<div class="col-xlg-1 col-lg-1 col-md-1 col-sm-1 col-xs-12 hidden-sm-down task-entry-lead">
 						<div class="task-entry-priority">@{{ task.priority }}</div>
 						<div class="task-entry-completion">@{{ task.completion }}%</div>
 					</div>
-					<div class="col-md-10">
+					<div class="col-xs-11 col-sm-11 col-md-11 col-sm-12 col-xs-12 hidden-md-up task-entry-lead">
+						<div>
+							<span class="task-entry-priority">@{{ task.priority }}</span> &nbsp; 
+							<span class="task-entry-completion">@{{ task.completion }}%</span>
+						</div>
+					</div>
+
+					<div class="col-xlg-11 col-lg-11 col-md-11 col-sm-11 col-xs-12">
 						<div class="task-entry-title">
 							<a :href="'/edit/' + task.id">@{{ task.title }}</a>
 						</div>
