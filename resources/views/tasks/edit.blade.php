@@ -61,7 +61,7 @@
 					
 					<div v-for="( task_item, t ) in task.task_items_incomplete" class="task-view-task-item">
 
-						<span @click="completeTaskItem(task_item)" class="clickable"><i class="far fa-square"></i> &nbsp; <span class="badge badge-warning">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }}</span>
+						<span @click="completeTaskItem(task_item)" class="clickable"><i class="far fa-square"></i> &nbsp; </span><span class="badge badge-warning">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }}
 
 					</div>
 
@@ -69,7 +69,7 @@
 
 					<div v-for="( task_item, t ) in task.task_items_complete" class="task-view-task-item">
 
-						<span @click="incompleteTaskItem(task_item)" class="clickable"><i class="fa fa-check-square"></i> &nbsp; <span class="badge badge-success">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }}</span>
+						<span @click="incompleteTaskItem(task_item)" class="clickable"><i class="fa fa-check-square"></i> &nbsp; </span><span class="badge badge-success">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }}
 
 					</div>
 

@@ -51,8 +51,8 @@
 						</div>
 				
 						<div v-for="item in task.task_items">
-							<div @click="completeTaskItem(item)">
-								<i class="far fa-square"></i> @{{ item.title }} &nbsp; <span class="badge badge-warning">@{{ item.priority }}</span>
+							<div>
+								<span @click="completeTaskItem(item)"><i class="far fa-square"></i> &nbsp; </span> @{{ item.title }} &nbsp; <span class="badge badge-warning">@{{ item.priority }}</span>
 							</div>
 						</div>
 				
