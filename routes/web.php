@@ -15,8 +15,10 @@ date_default_timezone_set('America/Jamaica');
 
 Auth::routes();
 
-Route::get('/', 'TaskController@index');
+Route::get('/', 'TaskController@browseWorking');
 Route::get('/home', function(){ return redirect('/'); })->name('home');
+
+Route::get('/dashboard', 'TaskController@index');
 
 Route::get('/new', 'TaskController@edit');
 Route::get('/edit/{id}', 'TaskController@edit');
