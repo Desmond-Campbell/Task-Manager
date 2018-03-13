@@ -62,14 +62,14 @@
 
       <nav class="n/avbar n/avbar-toggleable-md navbar-inverse bg-inverse fixed-top" style="padding: 10px;">
 
-<a class="white-link display-inline" href="/browse/working">&nbsp;<i class="fa fa-bars"></i>&nbsp; </a> &nbsp;
-<a class="white-link display-inline" href="/dashboard">&nbsp;<i class="fa fa-th-large"></i>&nbsp; </a> &nbsp;
-<a class="white-link display-inline" href="/new">&nbsp;<i class="fa fa-plus"></i>&nbsp; </a> &nbsp;
-<a class="white-link display-inline" href="/browse/due/today">&nbsp;<i class="fa fa-clock"></i>&nbsp;</a> &nbsp;
-<a class="white-link display-inline" href="/browse/late">&nbsp;<i class="fa fa-exclamation-triangle"></i>&nbsp;</a>
-<a class="white-link display-inline" href="/browse/pipeline/today">&nbsp;<i class="fa fa-transfer"></i>&nbsp;</a> &nbsp;
-<a class="white-link display-inline" href="/browse/followups/today">&nbsp;<i class="fa fa-share"></i>&nbsp;</a> &nbsp;
-<a class="white-link display-inline" href="/search">&nbsp;<i class="fa fa-search"></i></a>
+        <a class="white-link display-inline" href="/browse/working">&nbsp;<i class="fa fa-bars"></i>&nbsp; </a> &nbsp;
+        <a class="white-link display-inline" href="/dashboard">&nbsp;<i class="fa fa-th-large"></i>&nbsp; </a> &nbsp;
+        <a class="white-link display-inline" href="/new">&nbsp;<i class="fa fa-plus"></i>&nbsp; </a> &nbsp;
+        <a class="white-link display-inline" href="/browse/due/today">&nbsp;<i class="fa fa-clock"></i>&nbsp;</a> &nbsp;
+        <a class="white-link display-inline" href="/browse/late">&nbsp;<i class="fa fa-exclamation-triangle"></i>&nbsp;</a>
+        <a class="white-link display-inline" href="/browse/pipeline/today">&nbsp;<i class="fa fa-transfer"></i>&nbsp;</a> &nbsp;
+        <a class="white-link display-inline" href="/browse/followups/today">&nbsp;<i class="fa fa-share"></i>&nbsp;</a> &nbsp;
+        <a class="white-link display-inline" href="/search">&nbsp;<i class="fa fa-search"></i></a>
 
     
       </nav>

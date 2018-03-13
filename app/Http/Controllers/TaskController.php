@@ -606,7 +606,7 @@ class TaskController extends Controller
  		$project_id = get_project_id();
  		$sort = $R->input('sort', [ 'field' => 'priority', 'order' => 'asc', 'show_completed' => false ] );
 
- 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with([ 'task_items' => function($q){ $q->where('completed', 0); }, 'followups' ])->where('working', 1);
+ 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with([ 'task_items' => function($q){ $q->where('completed', 0); $q->orderBy('priority', 'asc'); }, 'followups' ])->where('working', 1);
 
 		$tasks = $tasks->where('completed', 0);
 
