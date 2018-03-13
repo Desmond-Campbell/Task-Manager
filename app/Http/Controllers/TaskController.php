@@ -312,6 +312,20 @@ class TaskController extends Controller
 
  				switch ( $R->input('action') ) {
 
+ 					case 'enlist':
+
+ 						$task->working = 1;
+ 						$task->save();
+
+ 					break;
+
+ 					case 'delist':
+
+ 						$task->working = 0;
+ 						$task->save();
+
+ 					break;
+
  					case 'complete':
 
  						$task->completed = 1;
@@ -462,6 +476,12 @@ class TaskController extends Controller
 
  	}
 
+ 	public function browseWorking() {
+
+ 		return view('tasks.browse.working');
+
+ 	}
+
  	public function browseDue() {
 
  		return view('tasks.browse.due');
@@ -576,6 +596,38 @@ class TaskController extends Controller
  		$tasks = $tasks->get();
 
  		return response()->json( [ 'tasks' => $tasks, 'mode' => 'due' ] );
+
+ 	}
+
+ 	public function apiBrowseWorking( Request $R ) {
+
+ 		$when = 'today';
+ 		$user_id = get_user_id();
+ 		$project_id = get_project_id();
+ 		$sort = $R->input('sort', [ 'field' => 'priority', 'order' => 'asc', 'show_completed' => false ] );
+
+ 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with([ 'task_items' => function($q){ $q->where('completed', 0); }, 'followups' ])->where('working', 1);
+
+		$tasks = $tasks->where('completed', 0);
+
+ 		if ( in_array( $sort['field'] ?? 'priority', [ 'priority', 'completion' ] ) ) {
+
+			$sort_field = $sort['field'];
+			$sort_order = ( $sort['order'] ?? 'asc' ) == 'desc' ? 'desc' : 'asc';
+
+			$tasks = $tasks->orderBy( $sort_field, $sort_order );
+
+		}
+
+		if ( $sort['limit'] ?? false ) {
+
+			$tasks = $tasks->take( $sort['limit'] );
+
+		}
+
+ 		$tasks = $tasks->get();
+
+ 		return response()->json( [ 'tasks' => $tasks, 'mode' => 'working' ] );
 
  	}
 

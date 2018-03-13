@@ -35,6 +35,9 @@
               <a class="nav-link" href="/new"><i class="fa fa-plus"></i></a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/browse/working">{{___('Working')}}</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="/browse/due/today">{{___('Due')}}</a>
             </li>
             <li class="nav-item">
@@ -61,6 +64,7 @@
 
         <a class="white-link display-inline" href="/"><i class="fa fa-bars"></i></a> | 
         <a class="white-link display-inline" href="/new"><i class="fa fa-plus"></i></a> | 
+        <a class="white-link display-inline" href="/browse/working"><i class="fa fa-circle"></i></a> | 
         <a class="white-link display-inline" href="/browse/due/today">{{___('Due')}}</a> | 
         <a class="white-link display-inline" href="/browse/late">{{___('Late')}}</a> | 
         <a class="white-link display-inline" href="/browse/pipeline/today">{{___('Pipeline')}}</a> | 

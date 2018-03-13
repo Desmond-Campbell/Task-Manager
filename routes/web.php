@@ -21,11 +21,14 @@ Route::get('/home', function(){ return redirect('/'); })->name('home');
 Route::get('/new', 'TaskController@edit');
 Route::get('/edit/{id}', 'TaskController@edit');
 
+Route::get('/browse/working', 'TaskController@browseWorking');
 Route::get('/browse/late', 'TaskController@browseLate');
 Route::get('/browse/due/{when}', 'TaskController@browseDue');
 Route::get('/browse/pipeline/{when}', 'TaskController@browsePipeline');
 Route::get('/browse/followups/{when}', 'TaskController@browseFollowups');
 
+Route::post('/api/tasks/working', 'TaskController@apiBrowseWorking');
+Route::post('/api/tasks/working/{when}', 'TaskController@apiBrowseWorking');
 Route::post('/api/tasks/late', 'TaskController@apiBrowseLate');
 Route::post('/api/tasks/late/{when}', 'TaskController@apiBrowseLate');
 Route::post('/api/tasks/due/{when}', 'TaskController@apiBrowseDue');

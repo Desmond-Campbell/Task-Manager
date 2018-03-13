@@ -65,6 +65,66 @@ var vm = new Vue({
 
 		},
 
+		completeTaskItem : function ( task_item ) {
+
+			axios.post( '/api/tasks/' + task_item.task_id + '/action', { task_item : task_item, action : 'complete_task_item' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTasks();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		enlistTask : function ( task ) {
+
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'enlist' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTasks();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		delistTask : function ( task ) {
+
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'delist' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTasks();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
 		followupTask : function ( task ) {
 
 			var followup_action = prompt("Follow-up action:", "");
@@ -190,25 +250,21 @@ var vm = new Vue({
 
 		completeFollowup : function ( followup ) {
 
-			if ( alertConfirm( ___t('Done?') ) ) {
+			axios.post( '/api/tasks/' + followup.task_id + '/action', { followup : followup, action : 'complete_followup' } ).then( 
 
-				axios.post( '/api/tasks/' + followup.task_id + '/action', { followup : followup, action : 'complete_followup' } ).then( 
+				function ( response ) {
 
-					function ( response ) {
+					vm.fetchTasks();
 
-						vm.fetchTasks();
+				},
 
-					},
+				function () {
 
-					function () {
+					alertError( general_error_failure );
 
-						alertError( general_error_failure );
+				}
 
-					}
-
-				);
-
-			}
+			);
 
 		},
 
@@ -238,7 +294,7 @@ var vm = new Vue({
 
 		cancelFollowup : function ( followup ) {
 
-			if ( alertConfirm( ___t('Done?') ) ) {
+			if ( alertConfirm( ___t('Cancel?') ) ) {
 
 				axios.post( '/api/tasks/' + followup.task_id + '/action', { followup : followup, action : 'cancel_followup' } ).then( 
 

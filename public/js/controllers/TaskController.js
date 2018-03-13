@@ -250,27 +250,63 @@ var vm = new Vue({
 
 		/****************/
 
+		enlistTask : function ( task ) {
+
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'enlist' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTask();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
+		delistTask : function ( task ) {
+
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'delist' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTask();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
 		completeTask : function ( task ) {
 
-			if ( alertConfirm( ___t('Done?') ) ) {
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'complete' } ).then( 
 
-				axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'complete' } ).then( 
+				function ( response ) {
 
-					function ( response ) {
+					vm.fetchTask();
 
-						vm.fetchTask();
+				},
 
-					},
+				function () {
 
-					function () {
+					alertError( general_error_failure );
 
-						alertError( general_error_failure );
+				}
 
-					}
-
-				);
-
-			}
+			);
 
 		},
 
@@ -373,25 +409,21 @@ var vm = new Vue({
 
 		completeTaskItem : function ( task_item ) {
 
-			if ( alertConfirm( ___t('Done?') ) ) {
+			axios.post( '/api/tasks/' + vm.task.id + '/action', { task_item : task_item, action : 'complete_task_item' } ).then( 
 
-				axios.post( '/api/tasks/' + vm.task.id + '/action', { task_item : task_item, action : 'complete_task_item' } ).then( 
+				function ( response ) {
 
-					function ( response ) {
+					vm.fetchTask();
 
-						vm.fetchTask();
+				},
 
-					},
+				function () {
 
-					function () {
+					alertError( general_error_failure );
 
-						alertError( general_error_failure );
+				}
 
-					}
-
-				);
-
-			}
+			);
 
 		},
 
