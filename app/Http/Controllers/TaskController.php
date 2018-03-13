@@ -45,7 +45,11 @@ class TaskController extends Controller
       $t = Task::find( $r->task_id );
 
       if ( $t ) {
+
+      	if ( !$t->completed ) {
           $results[$t->title . $t->id] = $t;
+      	}
+
       }
 
     }
@@ -774,7 +778,7 @@ class TaskController extends Controller
 
  			if ( count( $item_parts ) > 1 ) {
 
- 				$priority = is_numeric( $item_parts[0] ) ? $item_parts[0] : '';
+ 				$priority = is_numeric( trim( $item_parts[0] ) ) ? trim( $item_parts[0] ) : '';
 
  				if ( trim( $priority ) ) {
 
