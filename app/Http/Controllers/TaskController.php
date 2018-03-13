@@ -776,7 +776,7 @@ class TaskController extends Controller
 
  				$priority = is_numeric( $item_parts[0] ) ? $item_parts[0] : '';
 
- 				if ( $priority ) {
+ 				if ( trim( $priority ) ) {
 
 	 				$title = trim( str_replace( $priority, '', $item ) );
 	 				$priority = (float) $priority;
@@ -784,6 +784,7 @@ class TaskController extends Controller
 	 			} else {
 
 	 				$title = $item;
+	 				$priority = 50;
 
 	 			}
 
