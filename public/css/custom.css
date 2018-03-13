@@ -130,3 +130,7 @@ body {
 .no-bold {
 	font-weight: normal !important;
 }
+
+.strikeout {
+	text-decoration: line-through;
+}

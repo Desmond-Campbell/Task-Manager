@@ -67,21 +67,25 @@ var vm = new Vue({
 
 		completeTaskItem : function ( task_item ) {
 
-			axios.post( '/api/tasks/' + task_item.task_id + '/action', { task_item : task_item, action : 'complete_task_item' } ).then( 
+			if ( alertConfirm( ___t('Done?') ) ) {
 
-				function ( response ) {
+				axios.post( '/api/tasks/' + task_item.task_id + '/action', { task_item : task_item, action : 'complete_task_item' } ).then( 
 
-					vm.fetchTasks();
+					function ( response ) {
 
-				},
+						vm.fetchTasks();
 
-				function () {
+					},
 
-					alertError( general_error_failure );
+					function () {
 
-				}
+						alertError( general_error_failure );
 
-			);
+					}
+
+				);
+
+			}
 
 		},
 

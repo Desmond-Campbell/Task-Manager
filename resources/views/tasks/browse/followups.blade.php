@@ -13,14 +13,14 @@
 	<h1>{{ ___("For Follow-up") }}</h1>
 
 	<ul class="filter-menu">
-		<li :class="{ 'active' : period == 'today' }"><a href="#" @click="getTasks('today')">{{___('Today')}}</a></li>
-		<li :class="{ 'active' : period == 'late' }"><a href="#" @click="getTasks('late')">{{___('Outstanding')}}</a></li>
+		<li :class="{ 'active' : period == 'today' }"><a href="javascript:;" @click="getTasks('today')">{{___('Today')}}</a></li>
+		<li :class="{ 'active' : period == 'late' }"><a href="javascript:;" @click="getTasks('late')">{{___('Outstanding')}}</a></li>
 	</ul>
 
 	<div class="row">
 
 		<div class="col-md-8">
-			<a href="#" @click="sortBy('priority')">
+			<a href="javascript:;" @click="sortBy('priority')">
 				{{___('Priority')}}
 				<span v-if="sort.field == 'priority'">
 					<i class="fa fa-chevron-up" v-if="sort.order == 'asc'"></i>
@@ -30,7 +30,7 @@
 
 			&nbsp; &nbsp;
 
-			<a href="#" @click="sortBy('completion')">
+			<a href="javascript:;" @click="sortBy('completion')">
 				{{___('Completion')}}
 				<span v-if="sort.field == 'completion'">
 					<i class="fa fa-chevron-up" v-if="sort.order == 'asc'"></i>

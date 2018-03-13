@@ -19,10 +19,10 @@
 	<br />
 
 	<ul class="filter-menu">
-		<li :class="{ 'active' : editMode == 'view' }"><a href="#" @click="editMode = 'view'">{{___('View')}}</a></li>
-		<li :class="{ 'active' : editMode == 'details' }"><a href="#" @click="editMode = 'details'">{{___('Edit')}}</a></li>
-		<li :class="{ 'active' : editMode == 'task_items' }"><a href="#" @click="editMode = 'task_items'">{{___('Task Items')}}</a></li>
-		<li :class="{ 'active' : editMode == 'followups' }"><a href="#" @click="editMode = 'followups'">{{___('Followups')}}</a></li>
+		<li :class="{ 'active' : editMode == 'view' }"><a href="javascript:;" @click="editMode = 'view'">{{___('View')}}</a></li>
+		<li :class="{ 'active' : editMode == 'details' }"><a href="javascript:;" @click="editMode = 'details'">{{___('Edit')}}</a></li>
+		<li :class="{ 'active' : editMode == 'task_items' }"><a href="javascript:;" @click="editMode = 'task_items'">{{___('Task Items')}}</a></li>
+		<li :class="{ 'active' : editMode == 'followups' }"><a href="javascript:;" @click="editMode = 'followups'">{{___('Followups')}}</a></li>
 	</ul>
 
 	<div class="row">
@@ -147,14 +147,14 @@
 
 							<tr v-if="taskItemEditId != i && !task_item.deleted && !newTaskItemMode">
 								<td width="20%">@{{task_item.priority}}</td>
-								<td>@{{task_item.title}}</td>
-								<td><a href="#" @click="taskItemEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i); newTaskItemMode = false"><i class="fa fa-trash"></i></a></td>
+								<td><span :class="{ 'strikeout' : task_item.completed }">@{{task_item.title}}</span></td>
+								<td><a href="javascript:;" @click="taskItemEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="javascript:;" @click="deleteTaskItem(i); newTaskItemMode = false"><i class="fa fa-trash"></i></a></td>
 							</tr>
 
 							<tr v-if="taskItemEditId == i">
 								<td width="20%"><input type="text" class="form-control input-sm" v-model="task_item.priority" /></td>
-								<td><input type="text" class="form-control input-sm" v-model="task_item.title" /></td>
-								<td><a href="#" @click="taskItemEditId = -1; newTaskItemMode = false"><i class="fa fa-check"></i></a> &nbsp; <a href="#" @click="deleteTaskItem(i); newTaskItemMode = false"><i class="fa fa-trash"></i></a></td>
+								<td><textarea class="form-control input-sm" v-model="task_item.title"></textarea></td>
+								<td><a href="javascript:;" @click="taskItemEditId = -1; newTaskItemMode = false"><i class="fa fa-check"></i></a> &nbsp; <a href="javascript:;" @click="deleteTaskItem(i); newTaskItemMode = false"><i class="fa fa-trash"></i></a></td>
 							</tr>
 
 						</tbody>
@@ -193,7 +193,7 @@
 
 						<tr v-if="followupEditId != i && !followup.deleted">
 							<td>@{{followup.action}} | @{{followup.due_date}} @{{followup.due_time}}</td>
-							<td><a href="#" @click="followupEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="#" @click="deleteFollowup(i)"><i class="fa fa-trash"></i></a></td>
+							<td><a href="javascript:;" @click="followupEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="javascript:;" @click="deleteFollowup(i)"><i class="fa fa-trash"></i></a></td>
 						</tr>
 
 						<tr v-if="followupEditId == i">
@@ -204,7 +204,7 @@
 									<div class="col-md-6"><input type="text" class="form-control input-sm" v-model="followup.due_time" /></div>
 								</div>
 							</td>
-							<td><a href="#" @click="followupEditId = -1"><i class="fa fa-check"></i></a> &nbsp; <a href="#" @click="deleteFollowup(i)"><i class="fa fa-trash"></i></a></td>
+							<td><a href="javascript:;" @click="followupEditId = -1"><i class="fa fa-check"></i></a> &nbsp; <a href="javascript:;" @click="deleteFollowup(i)"><i class="fa fa-trash"></i></a></td>
 						</tr>
 
 					</tbody>

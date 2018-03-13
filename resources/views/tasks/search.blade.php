@@ -20,7 +20,7 @@
 	{{-- <div class="row">
 
 		<div class="col-md-8">
-			<a href="#" @click="sortBy('priority')">
+			<a href="javascript:;" @click="sortBy('priority')">
 				{{___('Priority')}}
 				<span v-if="sort.field == 'priority'">
 					<i class="fa fa-chevron-up" v-if="sort.order == 'asc'"></i>
@@ -30,7 +30,7 @@
 
 			&nbsp; &nbsp;
 
-			<a href="#" @click="sortBy('completion')">
+			<a href="javascript:;" @click="sortBy('completion')">
 				{{___('Completion')}}
 				<span v-if="sort.field == 'completion'">
 					<i class="fa fa-chevron-up" v-if="sort.order == 'asc'"></i>

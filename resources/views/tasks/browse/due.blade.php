@@ -13,18 +13,18 @@
 	<h1>{{ ___("What's Due") }}</h1>
 
 	<ul class="filter-menu">
-		<li :class="{ 'active' : period == 'today' }"><a href="#" @click="getTasks('today')">{{___('Today')}}</a></li>
-		<li :class="{ 'active' : period == 'tomorrow' }"><a href="#" @click="getTasks('tomorrow')">{{___('Tomorrow')}}</a></li>
-		<li :class="{ 'active' : period == 'this week' }"><a href="#" @click="getTasks('this week')">{{___('This Week')}}</a></li>
-		<li :class="{ 'active' : period == 'next week' }"><a href="#" @click="getTasks('next week')">{{___('Next Week')}}</a></li>
-		<li :class="{ 'active' : period == 'this month' }"><a href="#" @click="getTasks('this month')">{{___('This Month')}}</a></li>
-		<li :class="{ 'active' : period == 'next month' }"><a href="#" @click="getTasks('next month')">{{___('Next Month')}}</a></li>
+		<li :class="{ 'active' : period == 'today' }"><a href="javascript:;" @click="getTasks('today')">{{___('Today')}}</a></li>
+		<li :class="{ 'active' : period == 'tomorrow' }"><a href="javascript:;" @click="getTasks('tomorrow')">{{___('Tomorrow')}}</a></li>
+		<li :class="{ 'active' : period == 'this week' }"><a href="javascript:;" @click="getTasks('this week')">{{___('This Week')}}</a></li>
+		<li :class="{ 'active' : period == 'next week' }"><a href="javascript:;" @click="getTasks('next week')">{{___('Next Week')}}</a></li>
+		<li :class="{ 'active' : period == 'this month' }"><a href="javascript:;" @click="getTasks('this month')">{{___('This Month')}}</a></li>
+		<li :class="{ 'active' : period == 'next month' }"><a href="javascript:;" @click="getTasks('next month')">{{___('Next Month')}}</a></li>
 	</ul>
 
 	<div class="row">
 
 		<div class="col-md-8">
-			<a href="#" @click="sortBy('priority')">
+			<a href="javascript:;" @click="sortBy('priority')">
 				{{___('Priority')}}
 				<span v-if="sort.field == 'priority'">
 					<i class="fa fa-chevron-up" v-if="sort.order == 'asc'"></i>
@@ -34,7 +34,7 @@
 
 			&nbsp; &nbsp;
 
-			<a href="#" @click="sortBy('completion')">
+			<a href="javascript:;" @click="sortBy('completion')">
 				{{___('Completion')}}
 				<span v-if="sort.field == 'completion'">
 					<i class="fa fa-chevron-up" v-if="sort.order == 'asc'"></i>
