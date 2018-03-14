@@ -151,6 +151,7 @@ class TaskController extends Controller
  		$assignees = $R->input('assignees');
  		$task_items = $R->input('task_items');
  		$followups = $R->input('followups');
+ 		$notes = $R->input('notes');
 
  		$task = null;
 
@@ -175,6 +176,7 @@ class TaskController extends Controller
  		$data['categories'] = $categories;
  		$data['features'] = $features;
  		$data['assignees'] = $assignees;
+ 		$data['notes'] = $notes;
 
  		$priority_list = [];
 		
