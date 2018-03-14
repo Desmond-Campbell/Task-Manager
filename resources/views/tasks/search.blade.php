@@ -17,8 +17,9 @@
 	  </form>
 	</div>
 
-	{{-- <div class="row">
+	<div class="row">
 
+	{{-- 
 		<div class="col-md-8">
 			<a href="javascript:;" @click="sortBy('priority')">
 				{{___('Priority')}}
@@ -40,11 +41,13 @@
 
 			&nbsp; &nbsp;
 
+	 --}}
+	
 			<input type="checkbox" id="show-completed" v-model="sort.show_completed" :value="true" @click="fetchTasks();" /><label for="show-completed" @click="fetchTasks();"> &nbsp; {{___('Completed')}}</label>
 
 		</div>
 
-	</div> --}}
+	</div>
 
 	<div class="row">
 

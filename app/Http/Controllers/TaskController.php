@@ -46,7 +46,7 @@ class TaskController extends Controller
 
       if ( $t ) {
 
-      	if ( !$t->completed ) {
+      	if ( !$t->completed || ( $R->input('sort')['show_completed'] ?? false ) ) {
           $results[$t->title . $t->id] = $t;
       	}
 
