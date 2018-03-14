@@ -19,8 +19,8 @@
 
 	<div class="row">
 
-	{{-- 
 		<div class="col-md-8">
+	{{-- 
 			<a href="javascript:;" @click="sortBy('priority')">
 				{{___('Priority')}}
 				<span v-if="sort.field == 'priority'">
