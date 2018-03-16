@@ -201,14 +201,22 @@ class TaskController extends Controller
 	 				$task_item['user_id'] = $user_id;
 	 				$task_item['priority'] = $task_item['priority'] ?? 50;
 
-	 				TaskItem::create( $task_item );
+	 				if ( trim( $task_item['title'] ) ) {
+
+		 				TaskItem::create( $task_item );
+
+		 			}
 
 	 			} else {
 
 	 				if ( !( $task_item['deleted'] ?? false ) ) {
 
-	 					$task_item_record->update( $task_item );
-	 					$task_item_record->save();
+	 					if ( trim( $task_item['title'] ) ) {
+
+		 					$task_item_record->update( $task_item );
+		 					$task_item_record->save();
+
+		 				}
 
 	 				} else {
 
@@ -801,7 +809,11 @@ class TaskController extends Controller
 
  			}
 
- 			$task_items[] = [ 'priority' => $priority, 'title' => $title ];
+ 			if ( trim( $title )  {
+
+	 			$task_items[] = [ 'priority' => $priority, 'title' => $title ];
+
+	 		}
 
  		}
 
