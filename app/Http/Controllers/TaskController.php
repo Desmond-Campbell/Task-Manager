@@ -809,7 +809,7 @@ class TaskController extends Controller
 
  			}
 
- 			if ( trim( $title )  {
+ 			if ( trim( $title ) )  {
 
 	 			$task_items[] = [ 'priority' => $priority, 'title' => $title ];
 
