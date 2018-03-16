@@ -300,9 +300,13 @@ class TaskController extends Controller
  		$project_id = get_project_id();
  		$user_id = get_user_id();
 
- 		if ( $id ) {
+ 		$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->find( $id )->delete();
 
- 			$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups')->find( $id )->delete();
+ 		if ( $task ) {
+
+ 			TaskFollowup::where('task_id', $id)->delete();
+ 			TaskItem::where('task_id', $id)->delete();
+ 			$task->delete();
 
  		} else {
 
