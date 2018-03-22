@@ -53,4 +53,14 @@ Route::get('/indx', function(){
 
 	\App\SearchIndex::rebuildIndex( 0, 1000 );
 
+	if ( request('return') ) {
+
+		return redirect( base64_decode( request('return') ) );
+
+	} else {
+
+		return redirect( '/search' );
+
+	}
+
 });

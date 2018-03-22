@@ -32,3 +32,11 @@ function sort_by_label($a, $b)
     if ($a == $b) return 0;
     return ($a < $b) ? -1 : 1;
 }
+
+function get_index_link() {
+
+	$path = request()->path();
+
+	return '/indx?return=' . base64_encode( $path );
+
+}
