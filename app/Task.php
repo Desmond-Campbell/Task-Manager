@@ -24,11 +24,9 @@ class Task extends Model
 
   public static function calculateCompletion( $tasks ) {
 
-    // if ( !is_array( $tasks ) ) return [];
-
     foreach ( $tasks as $task ) {
 
-      $task->completion = TaskItem::calculateCompletion( $task->task_items ?? [] );
+      $task->completion = TaskItem::calculateCompletion( $task->id );
 
     }
 

@@ -99,7 +99,7 @@ class TaskController extends Controller
  			$task->task_items_incomplete = $task_items_incomplete;
  			$task->task_items_complete = $task_items_complete;
 
- 			$task->completion = TaskItem::calculateCompletion( $task->task_items );
+ 			$task->completion = TaskItem::calculateCompletion( $task->id );
 
  		}
 

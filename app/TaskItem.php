@@ -17,10 +17,10 @@ class TaskItem extends Model
   	return $this->belongsTo(\App\User::class);
   }
 
-  public static function calculateCompletion( $task_items ) {
+  public static function calculateCompletion( $task_id ) {
 
     $total = $total_completed = 0;
-    $task_id = 0;
+    $task_items = TaskItem::where('task_id', $task_id)->get();
 
     foreach ( $task_items as $task_item ) {
 
