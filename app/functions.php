@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 function ___( $text ) { return $text; }
 
 function get_user_id() {
@@ -38,5 +40,11 @@ function get_index_link() {
 	$path = request()->path();
 
 	return '/indx?return=' . base64_encode( $path );
+
+}
+
+function format_date( $date, $format ) {
+
+	return Carbon::parse( $date )->format( $format );
 
 }

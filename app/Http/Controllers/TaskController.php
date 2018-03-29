@@ -290,6 +290,8 @@ class TaskController extends Controller
 
  		}
 
+ 		Task::updateSchedule( $id );
+
  		$task = Task::with( 'task_items', 'followups' )->find( $id );
 
  		return response()->json( [ 'task' => $task ] );

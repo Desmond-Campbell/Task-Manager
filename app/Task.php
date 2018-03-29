@@ -34,6 +34,24 @@ class Task extends Model
 
   }
 
+  public static function updateSchedule( $task_id ) {
+
+    $task = self::find( $task_id );
+
+    if ( !$task ) return;
+
+    $start_date = $task->start_date;
+    $start_time = $task->start_time;
+    $task->start_date_full = "$start_date $start_time";
+
+    $due_date = $task->due_date;
+    $due_time = $task->due_time;
+    $task->due_date_full = "$due_date $due_time";
+
+    $task->save();
+
+  }
+
   protected static function boot()
   {
     parent::boot();
