@@ -22,6 +22,20 @@ class Task extends Model
   	return $this->belongsTo(\App\User::class);
   }
 
+  public static function calculateCompletion( $tasks ) {
+
+    // if ( !is_array( $tasks ) ) return [];
+
+    foreach ( $tasks as $task ) {
+
+      $task->completion = TaskItem::calculateCompletion( $task->task_items ?? [] );
+
+    }
+
+    return $tasks;
+
+  }
+
   protected static function boot()
   {
     parent::boot();

@@ -17,6 +17,27 @@ class TaskItem extends Model
   	return $this->belongsTo(\App\User::class);
   }
 
+  public static function calculateCompletion( $task_items ) {
+
+    $total = $total_completed = 0;
+
+    foreach ( $task_items as $task_item ) {
+
+      $weight = 100 - ( ( (float) $task_item->priority ) ?? 50 );
+      $total += $weight;
+
+      if ( $task_item->completed ) $total_completed += $weight;
+
+    }
+
+    if ( !$total ) return 0;
+
+    $completion = (int) ( 100 * $total_completed / $total );
+
+    return $completion;
+
+  }
+
   protected static function boot()
   {
     parent::boot();

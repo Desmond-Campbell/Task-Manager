@@ -99,6 +99,8 @@ class TaskController extends Controller
  			$task->task_items_incomplete = $task_items_incomplete;
  			$task->task_items_complete = $task_items_complete;
 
+ 			$task->completion = TaskItem::calculateCompletion( $task->task_items );
+
  		}
 
  		return response()->json( [ 'task' => $task ] );
@@ -612,6 +614,7 @@ class TaskController extends Controller
 		}
 
  		$tasks = $tasks->get();
+		$tasks = Task::calculateCompletion( $tasks );	
 
  		return response()->json( [ 'tasks' => $tasks, 'mode' => 'due' ] );
 
@@ -644,6 +647,7 @@ class TaskController extends Controller
 		}
 
  		$tasks = $tasks->get();
+		$tasks = Task::calculateCompletion( $tasks );	
 
  		return response()->json( [ 'tasks' => $tasks, 'mode' => 'working' ] );
 
@@ -678,6 +682,7 @@ class TaskController extends Controller
 		}
 
  		$tasks = $tasks->get();
+		$tasks = Task::calculateCompletion( $tasks );	
 
  		return response()->json( [ 'tasks' => $tasks, 'mode' => 'late' ] );
 
@@ -720,6 +725,7 @@ class TaskController extends Controller
 		}
 
  		$tasks = $tasks->get();
+		$tasks = Task::calculateCompletion( $tasks );	
 
  		return response()->json( [ 'tasks' => $tasks, 'mode' => 'pipeline' ] );
 
@@ -772,6 +778,7 @@ class TaskController extends Controller
 		}
 
  		$tasks = $tasks->get();
+		$tasks = Task::calculateCompletion( $tasks );	
 
  		return response()->json( [ 'tasks' => $tasks, 'mode' => 'followups' ] );
 
