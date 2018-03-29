@@ -20,8 +20,11 @@ class TaskItem extends Model
   public static function calculateCompletion( $task_items ) {
 
     $total = $total_completed = 0;
+    $task_id = 0;
 
     foreach ( $task_items as $task_item ) {
+
+      $task_id = $task_item->task_id;
 
       $weight = 100 - ( ( (float) $task_item->priority ) ?? 50 );
       $total += $weight;
@@ -33,6 +36,8 @@ class TaskItem extends Model
     if ( !$total ) return 0;
 
     $completion = (int) ( 100 * $total_completed / $total );
+
+    Task::where( 'id', $task_id )->update( [ 'completion' => $completion ] );
 
     return $completion;
 
