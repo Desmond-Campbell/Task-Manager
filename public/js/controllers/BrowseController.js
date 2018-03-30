@@ -344,4 +344,10 @@ var vm = new Vue({
 
 	},
 
+	filters : {
+	  moment: function (date, format) {
+	    return moment(date).format(format);
+	  }
+	}
+
 });

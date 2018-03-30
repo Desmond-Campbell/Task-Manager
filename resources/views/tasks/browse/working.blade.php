@@ -48,6 +48,8 @@
 					<div class="col-md-12">
 						<div class="task-entry-title no-bold" style="font-size: 90%">
 							<a :href="'/edit/' + task.id"><strong>@{{ task.priority }} @{{ task.completion }}%</strong> @{{ task.title }}</a> <button class="btn btn-secondary btn-sm" @click="delistTask(task)">{{___('x')}}</button>
+							<br />
+							<span class="help-block"><small>@{{ task.start_date_full | moment( "MMMM D @ h:mm a" ) }} - @{{ task.due_date_full | moment( "MMMM D @ h:mm a" )}}</small></span>
 						</div>
 				
 						<div v-for="item in task.task_items">
