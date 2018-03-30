@@ -76,13 +76,11 @@ class Reminders extends Command
         if ( count( $task_list_start ) || count( $task_list_due ) ) {
 
             $subject = ___( 'Reminders' ) . ' - ' . $start_time;
-            $body = '';
-            $body .= '<strong>' . strtoupper( ___( 'Starting About Now' ) ) . '</strong><br /><br />' . "\n";
-            $body .= implode( '<br />', $task_list_start ) . '<br /><br />' . "\n";
-            $body .= '<strong>' . strtoupper( ___( 'Due About Now' ) ) . '</strong><br /><br />' . "\n";
-            $body .= implode( '<br />', $task_list_due ) . '<br /><br />' . "\n";
+            $data = [];
+            $data['task_list_start'] = implode( '<br />', $task_list_start ) . '<br /><br />' . "\n";
+            $data['task_list_due'] = implode( '<br />', $task_list_due ) . '<br /><br />' . "\n";
 
-            Mail::send( 'emails.reminder', [ 'body' => $body ], function ($message) use ( $subject ) {
+            Mail::send( 'emails.reminder', [ 'data' => $data ], function ($message) use ( $subject ) {
             
                 $message->to( 'docampbell@gmail.com' );
                 $message->subject( $subject );
@@ -93,10 +91,11 @@ class Reminders extends Command
         } else {
 
             $subject = ___( 'Reminders' ) . ' - ' . $start_time;
-            $body = '';
-            $body .= '<p>Nothing now.</p>';
+            $data = [];
+            $data['task_list_start'] = '<b>Nothing</b>';
+            $data['task_list_due'] = '<b>Nothing</b>';
 
-            Mail::send( 'emails.reminder', [ 'body' => $body ], function ($message) use ( $subject ) {
+            Mail::send( 'emails.reminder', [ 'data' => $data ], function ($message) use ( $subject ) {
             
                 $message->to( 'docampbell@gmail.com' );
                 $message->subject( $subject );
