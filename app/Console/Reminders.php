@@ -82,7 +82,10 @@ class Reminders extends Command
 
             Mail::send( [], [], function ($message) use ( $subject, $data ) {
             
-                $body = '<strong>' . strtoupper( ___( 'Starting About Now' ) ) . '</strong><br /><br />' . $data['task_list_start'] . '<strong>' . strtoupper( ___( 'Due About Now' ) ) . '</strong><br /><br />' . $data['task_list_due'];
+                $body = '<strong>' . strtoupper( ___( 'Starting About Now' ) ) . '</strong><br /><br />';
+                $body .= $data['task_list_start'];
+                $body .= '<strong>' . strtoupper( ___( 'Due About Now' ) ) . '</strong><br /><br />';
+                $body .= $data['task_list_due'];
 
                 $message->to( 'docampbell@gmail.com' );
                 $message->subject( $subject );
