@@ -79,7 +79,7 @@ class Task extends Model
 
     }
 
-    $subject = ___( 'Reminders' ) . ' - ' . Carbon::parse( $start_time )->format('D \@ h a');
+    $subject = ___( 'Reminders' ) . ' - ' . Carbon::parse( $start_time )->format('D \@ g a');
 
     if ( count( $task_list_start ) || count( $task_list_due ) ) {
 
