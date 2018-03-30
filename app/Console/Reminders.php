@@ -63,13 +63,13 @@ class Reminders extends Command
 
         foreach ( $tasks_start as $task ) {
 
-            $task_list_start[] = '<strong>' . $task->title . '</strong> ' . ___( 'starts' ) . ' @ ' . format_date( $task->start_time, 'H:i a' );
+            $task_list_start[] = '<strong><a href="' . env('APP_URL') . '/edit/' . $task->id . '>' . $task->title . '</a></strong> ' . ___( 'starts' ) . ' @ ' . format_date( $task->start_time, 'H:i a' );
 
         }
 
         foreach ( $tasks_due as $task ) {
 
-            $task_list_due[] = '<strong>' . $task->title . '</strong> ' . ___( 'is due' ) . ' @ ' . format_date( $task->start_time, 'H:i a' );
+            $task_list_due[] = '<strong><a href="' . env('APP_URL') . '/edit/' . $task->id . '>' . $task->title . '</a></strong> ' . ___( 'is due' ) . ' @ ' . format_date( $task->start_time, 'H:i a' );
 
         }
 
@@ -82,7 +82,7 @@ class Reminders extends Command
             $body .= '<strong>' . strtoupper( ___( 'Due About Now' ) ) . '</strong><br /><br />' . "\n";
             $body .= implode( '<br />', $task_list_due ) . '<br /><br />' . "\n";
 
-            Mail::raw( $body, function ($message) use ( $subject ) {
+            Mail::send( 'emails.reminder', [ 'body' => $body ], function ($message) use ( $subject ) {
             
                 $message->to( 'docampbell@gmail.com' );
                 $message->subject( $subject );
@@ -96,7 +96,7 @@ class Reminders extends Command
             $body = '';
             $body .= '<p>Nothing now.</p>';
 
-            Mail::raw( $body, function ($message) use ( $subject ) {
+            Mail::send( 'emails.reminder', [ 'body' => $body ], function ($message) use ( $subject ) {
             
                 $message->to( 'docampbell@gmail.com' );
                 $message->subject( $subject );
