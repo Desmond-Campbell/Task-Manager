@@ -79,9 +79,10 @@ class Task extends Model
 
     }
 
+    $subject = ___( 'Reminders' ) . ' - ' . Carbon::parse( $start_time )->format('D \@ h a');
+
     if ( count( $task_list_start ) || count( $task_list_due ) ) {
 
-      $subject = ___( 'Reminders' ) . ' - ' . $start_time;
       $data = [];
       $data['task_list_start'] = implode( '<br />', $task_list_start ) . '<br /><br />' . "\n";
       $data['task_list_due'] = implode( '<br />', $task_list_due ) . '<br /><br />' . "\n";
@@ -104,7 +105,6 @@ class Task extends Model
 
       if ( $args['force_send'] ?? false ) {
 
-        $subject = ___( 'Reminders' ) . ' - ' . $start_time;
         $data = [];
         $data['task_list_start'] = implode( '<br />', [ ___('Nothing starting this period.') ] ) . '<br /><br />' . "\n";
         $data['task_list_due'] = implode( '<br />', [ ___('Nothing due this period.') ] ) . '<br /><br />' . "\n";
