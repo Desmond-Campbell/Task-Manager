@@ -69,13 +69,13 @@ class Task extends Model
 
     foreach ( $tasks_start as $task ) {
 
-        $task_list_start[] = '<strong><a href="' . env('APP_URL') . '/edit/' . $task->id . '">' . $task->title . '</a></strong> ' . ___( 'starts' ) . ' @ ' . format_date( $task->start_time, 'H:i a' );
+        $task_list_start[] = '<strong><a href="' . env('APP_URL') . '/edit/' . $task->id . '">' . $task->title . '</a></strong> ' . ___( 'starts' ) . ' @ ' . format_date( $task->start_time, 'H:i a' ) . ' & ' . ___( 'due' ) . ' @ ' . format_date( $task->due_time, 'H:i a' );
 
     }
 
     foreach ( $tasks_due as $task ) {
 
-        $task_list_due[] = '<strong><a href="' . env('APP_URL') . '/edit/' . $task->id . '">' . $task->title . '</a></strong> ' . ___( 'is due' ) . ' @ ' . format_date( $task->start_time, 'H:i a' );
+        $task_list_due[] = '<strong><a href="' . env('APP_URL') . '/edit/' . $task->id . '">' . $task->title . '</a></strong> ' . ___( 'is due' ) . ' @ ' . format_date( $task->due_time, 'H:i a' ) . ' & ' . ___( 'started' ) . ' @ ' . format_date( $task->start_time, 'H:i a' );
 
     }
 
