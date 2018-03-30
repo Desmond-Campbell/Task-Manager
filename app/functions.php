@@ -43,6 +43,14 @@ function get_index_link() {
 
 }
 
+function get_reminders_link() {
+
+	$path = request()->path();
+
+	return '/rmndrs?return=' . base64_encode( $path );
+
+}
+
 function format_date( $date, $format ) {
 
 	return Carbon::parse( $date )->format( $format );

@@ -49,6 +49,9 @@
             <li class="nav-item">
               <a class="nav-link" href="/browse/followups/today">{{___('Follow-ups')}}</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ get_reminders_link() }}"><i class="fa fa-bell"></i></a>
+            </li>
           </ul>
           <form class="form-inline my-2 my-lg-0" action="/search">
             <a href="{{ get_index_link() }}" class="btn btn-outline-default my-2 my-sm-0" style="color: #FFF"><i class="fa fa-search-plus"></i></a>
@@ -72,9 +75,7 @@
         <a class="white-link display-inline" href="/browse/followups/today">&nbsp;<i class="fa fa-share"></i>&nbsp;</a> &nbsp;
         <a class="white-link display-inline" href="{{ get_index_link() }}">&nbsp;<i class="fa fa-search-plus"></i></a>&nbsp;
         <a class="white-link display-inline" href="/search">&nbsp;<i class="fa fa-search"></i></a>
-
-    
-      </nav>
+        <a class="white-link display-inline" href="{{ get_reminders_link() }}">&nbsp;<i class="fa fa-bell"></i></a>
 
     </div>
 

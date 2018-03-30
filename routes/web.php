@@ -49,6 +49,22 @@ Route::get('/search/{query}', 'TaskController@search');
 Route::post('/search/{query}', 'TaskController@search');
 Route::get('/search', 'TaskController@searchResults');
 
+Route::get('/rmndrs', function() {
+
+	\App\Task::sendReminders( [ 'force_send' => true ] );
+
+	if ( request('return') ) {
+
+		return redirect( base64_decode( request('return') ) );
+
+	} else {
+
+		return redirect( '/' );
+
+	}
+
+});
+
 Route::get('/indx', function(){
 
 	\App\SearchIndex::rebuildIndex( 0, 1000 );
