@@ -80,28 +80,17 @@ class Reminders extends Command
             $data['task_list_start'] = implode( '<br />', $task_list_start ) . '<br /><br />' . "\n";
             $data['task_list_due'] = implode( '<br />', $task_list_due ) . '<br /><br />' . "\n";
 
-            Mail::send( 'emails.reminder', [ 'data' => $data ], function ($message) use ( $subject ) {
+            Mail::send( [], [], function ($message) use ( $subject, $data ) {
             
+                $body = '<strong>' . strtoupper( ___( 'Starting About Now' ) ) . '</strong><br /><br />' . $data['task_list_start'] . '<strong>' . strtoupper( ___( 'Due About Now' ) ) . '</strong><br /><br />' . $data['task_list_due'];
+
                 $message->to( 'docampbell@gmail.com' );
                 $message->subject( $subject );
                 $message->from( 'docampbell@gmail.com' );
+                $message->setBody( $body, 'text/html' );
 
             });
 
-        } else {
-
-            $subject = ___( 'Reminders' ) . ' - ' . $start_time;
-            $data = [];
-            $data['task_list_start'] = '<b>Nothing</b>';
-            $data['task_list_due'] = '<b>Nothing</b>';
-
-            Mail::send( 'emails.reminder', [ 'data' => $data ], function ($message) use ( $subject ) {
-            
-                $message->to( 'docampbell@gmail.com' );
-                $message->subject( $subject );
-                $message->from( 'docampbell@gmail.com' );
-
-            });            
         }
 
     }
