@@ -94,6 +94,13 @@ class TaskController extends Controller
 
  				}
 
+ 				if ( !$task_item->priority ) {
+
+ 					$task_item->priority = 50;
+ 					$task_item->save();
+
+ 				}
+
  			}
 
  			$task->task_items_incomplete = $task_items_incomplete;
@@ -215,6 +222,12 @@ class TaskController extends Controller
 
 	 					if ( trim( $task_item['title'] ) ) {
 
+		 					if ( !$task_item_record->priority ) {
+
+			 					$task_item_record->priority = 50;
+			 					
+			 				}
+
 		 					$task_item_record->update( $task_item );
 		 					$task_item_record->save();
 
@@ -273,6 +286,12 @@ class TaskController extends Controller
  				$task_item['task_id'] = $task->id;
  				$task_item['user_id'] = $user_id;
 
+ 				if ( !( $task_item['priority'] ?? false ) ) {
+
+ 					$task_item['priority'] = 50;
+ 					
+ 				}
+
  				TaskItem::create( $task_item );
 
  			}
@@ -308,8 +327,8 @@ class TaskController extends Controller
 
  		if ( $task ) {
 
- 			TaskFollowup::where('task_id', $id)->delete();
- 			TaskItem::where('task_id', $id)->delete();
+ 			// TaskFollowup::where('task_id', $id)->delete();
+ 			// TaskItem::where('task_id', $id)->delete();
  			$task->delete();
 
  		} else {
