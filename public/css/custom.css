@@ -134,3 +134,12 @@ body {
 .strikeout {
 	text-decoration: line-through;
 }
+
+.task-items-list, .task-items-list li {
+	list-style: none;
+	list-style-type: none;
+}
+
+.task-items-list {
+	margin-left: -40px;
+}
