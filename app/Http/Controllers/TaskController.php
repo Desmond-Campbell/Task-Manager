@@ -94,10 +94,10 @@ class TaskController extends Controller
 
  				}
 
- 				if ( !$task_item->priority ) {
+ 				if ( !$item->priority ) {
 
- 					$task_item->priority = 50;
- 					$task_item->save();
+ 					$item->priority = 50;
+ 					$item->save();
 
  				}
 
