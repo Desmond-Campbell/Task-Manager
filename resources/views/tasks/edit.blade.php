@@ -147,7 +147,7 @@
 
 							<div v-if="taskItemEditId != i && !task_item.deleted && !newTaskItemMode" class="row">
 								<div class="col-md-10">
-									@{{task_item.priority}}
+									<strong>@{{task_item.priority}}</strong>
 									<span :class="{ 'strikeout' : task_item.completed }">@{{task_item.title}}</span>
 								</div>
 								<div class="col-md-2">
