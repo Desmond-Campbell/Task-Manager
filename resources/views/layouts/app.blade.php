@@ -89,7 +89,7 @@
 
       <div id="schedule" v-show="showSchedule">
 
-        <table class="table" style="position:fixed; width:100%">
+        <table class="table" style="position:fixed; width:100%; background: #FFF; filter: alpha(opacity=90); opacity: 0.9">
 
           <tr>
             <td width="5.5%">&nbsp;</td>
