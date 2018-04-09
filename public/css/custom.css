@@ -143,3 +143,21 @@ body {
 .task-items-list {
 	margin-left: -40px;
 }
+
+/************* schedule *************/
+
+
+#schedule ul.schedule-day-columns,
+#schedule ul.schedule-day-columns li {
+	list-style: none;
+	list-style-type: none;
+}
+
+#schedule .schedule-day-columns tr td:nth-child('even') {
+	background: #f6f6f6;
+}
+
+#schedule .schedule-day-columns .schedule-task-list {
+	font-size: 70%;
+}
+

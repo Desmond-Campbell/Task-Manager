@@ -36,6 +36,7 @@ Route::post('/api/tasks/late/{when}', 'TaskController@apiBrowseLate');
 Route::post('/api/tasks/due/{when}', 'TaskController@apiBrowseDue');
 Route::post('/api/tasks/pipeline/{when}', 'TaskController@apiBrowsePipeline');
 Route::post('/api/tasks/followups/{when}', 'TaskController@apiBrowseFollowups');
+Route::post('/api/tasks/get-schedule', 'TaskController@apiBrowseSchedule');
 
 Route::get('/api/tasks/{id}/get', 'TaskController@getTask');
 Route::post('/api/tasks/{id}/update', 'TaskController@updateTask');

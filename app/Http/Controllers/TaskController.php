@@ -752,6 +752,81 @@ class TaskController extends Controller
 
  	}
 
+ 	public function apiBrowseSchedule( Request $R ) {
+
+ 		$start_date = $R->input('start_date', null);
+
+ 		if ( !$start_date ) $start_date = Carbon::now();
+
+ 		$offset = $R->input( 'offset', 0 );
+ 		$start_date = $start_date->addWeeks( $offset );
+
+ 		$period = $R->input('period', null);
+
+ 		if ( !in_array( $period, [ 'day', 'week', 'sunday' ] ) ) $period = 'sunday';
+
+ 		if ( $period == 'day' ) {
+
+ 			$end_date = Carbon::now();
+
+ 		} elseif ( $period == 'week' ) {
+
+ 			$end_date = $start_date->copy()->addWeeks(1);
+ 			
+ 		} elseif ( $period == 'sunday' ) {
+
+			$start_date = Carbon::parse( 'last week sunday' )->addWeeks($offset);
+			$end_date = $start_date->copy()->addWeeks(1);
+ 			
+ 		}
+
+ 		$user_id = get_user_id();
+ 		$project_id = get_project_id();
+
+ 		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups');
+
+ 		$tasks = $tasks->whereBetween('start_date', [ $start_date->toDateString() . ' 00:00:00', $end_date->toDateString() . ' 23:59:59' ] );
+
+ 		$tasks = $tasks->orderBy('start_time', 'asc')->get();
+		$tasks = Task::calculateCompletion( $tasks );
+
+		$empty_hours = [];
+
+		for( $i = 5; $i < 24; $i++ ) {
+
+			$empty_hours[$i] = [];
+
+		}
+
+		$tasks_by_day = [ "Sunday" => $empty_hours, "Monday" => $empty_hours, "Tuesday" => $empty_hours, "Wednesday" => $empty_hours, "Thursday" => $empty_hours, "Friday" => $empty_hours, "Saturday" => $empty_hours,  ];	
+
+		foreach ( $tasks as $task ) {
+
+			$task->day = Carbon::parse( $task->start_date )->format('l');
+			$task->hour = Carbon::parse( $task->start_time )->format('H');
+			$task->length = get_time_diff( [ 'start' => $task->start_date_full, 'end' => $task->due_date_full ] );
+
+			$tasks_by_day[$task->day][$task->hour] = $tasks_by_day[$task->day][$task->hour] ?? [];
+			$tasks_by_day[$task->day][$task->hour][] = $task;
+
+		}
+
+		$params = [ 'start_date' => $start_date->toDateString(), 'end_date' => $end_date->toDateString(), 'period' => $period ];
+
+		$schedule_dates = [];
+		$check_date = $start_date->copy();
+
+		while ( $check_date->lt( $end_date ) ) {
+
+			$schedule_dates[] = $check_date->format('j');
+			$check_date->addDays(1);
+
+		}
+
+ 		return response()->json( [ 'tasks' => array_values( $tasks_by_day ), 'mode' => 'schedule', 'params' => $params, 'dates' => $schedule_dates ] );
+
+ 	}
+
  	public function apiBrowseFollowups( Request $R ) {
 
  		$when = $R->route('when', 'today');

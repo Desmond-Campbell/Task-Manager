@@ -12,4 +12,13 @@
     <script src="/js/vendor/moment.js"></script>    
     <script src="/js/vendor/vuetify.min.js"></script>
     <script src="/js/app.js"></script>
+    <script type="text/javascript">
+
+    jQuery(document).ready(function() {
+
+      jQuery('#schedule').scrollTop(250);
+
+    });
+
+    </script>
     @yield('javascript-controllers')

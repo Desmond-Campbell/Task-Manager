@@ -56,3 +56,17 @@ function format_date( $date, $format ) {
 	return Carbon::parse( $date )->format( $format );
 
 }
+
+function get_time_diff( $args ) {
+
+	$start = Carbon::parse( $args['start'] ?? Carbon::now() );
+	$end = Carbon::parse( $args['end'] ?? Carbon::now() );
+	$unit = $args['unit'] ?? 'hour';
+
+	$diff = $start->diffInSeconds( $end );
+
+	$factors = [ 'minute' => 60, 'hour' => 60 * 60, 'day' => 60 * 60 * 24 ];
+
+	return round( $diff / $factors[$unit], 2 );
+
+}
