@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Reminders::class,
+        BuildIndex::class,
         //
     ];
 
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('reminders')->hourly();
+        $schedule->command('buildindex')->everyFiveMinutes();
     }
 
     /**

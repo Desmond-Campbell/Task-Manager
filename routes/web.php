@@ -68,7 +68,7 @@ Route::get('/rmndrs', function() {
 
 Route::get('/indx', function(){
 
-	\App\SearchIndex::rebuildIndex( 0, 1000 );
+	\App\SearchIndex::rebuildIndex( 0, 10000 );
 
 	if ( request('return') ) {
 
