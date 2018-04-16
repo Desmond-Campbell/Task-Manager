@@ -51,6 +51,8 @@ var vm = new Vue({
 
 		updateTask : function () {
 
+			idcheck = this.id;
+
 			axios.post( '/api/tasks/' + this.id + '/update', this.task ).then( 
 
 				function ( response ) {
@@ -64,6 +66,8 @@ var vm = new Vue({
 						vm.taskItemEditId = -1;
 						vm.followupEditId = -1;
 						vm.id = response.data.task.id;
+
+						if ( idcheck < 1 ) location.assign( '/edit/' + vm.id );
 
 						vm.fetchTask();
 
