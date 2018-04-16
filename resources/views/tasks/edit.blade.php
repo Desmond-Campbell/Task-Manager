@@ -61,7 +61,7 @@
 					
 					<div v-for="( task_item, t ) in task.task_items_incomplete" class="task-view-task-item">
 
-						<span @click="completeTaskItem(task_item)" class="clickable"><i class="far fa-square"></i> &nbsp; </span><span class="badge badge-warning">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }}
+						<span @click="completeTaskItem(task_item)" class="clickable"><i class="far fa-square"></i> &nbsp; </span><span class="badge badge-warning">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }} (@{{ task_item.points }})
 
 					</div>
 
@@ -69,7 +69,7 @@
 
 					<div v-for="( task_item, t ) in task.task_items_complete" class="task-view-task-item">
 
-						<span @click="incompleteTaskItem(task_item)" class="clickable"><i class="fa fa-check-square"></i> &nbsp; </span><span class="badge badge-success">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }}
+						<span @click="incompleteTaskItem(task_item)" class="clickable"><i class="fa fa-check-square"></i> &nbsp; </span><span class="badge badge-success">@{{ task_item.priority }}</span> &nbsp; @{{ task_item.title }} (@{{ task_item.points }})
 
 					</div>
 
@@ -148,7 +148,7 @@
 							<div v-if="taskItemEditId != i && !task_item.deleted && !newTaskItemMode" class="row">
 								<div class="col-md-10">
 									<strong>@{{task_item.priority}}</strong>
-									<span :class="{ 'strikeout' : task_item.completed }">@{{task_item.title}}</span>
+									<span :class="{ 'strikeout' : task_item.completed }">@{{task_item.title}}  (@{{ task_item.points }})</span>
 								</div>
 								<div class="col-md-2">
 									<a href="javascript:;" @click="taskItemEditId = i; refresh()"><i class="fa fa-edit"></i></a> &nbsp; <a href="javascript:;" @click="deleteTaskItem(i); newTaskItemMode = false"><i class="fa fa-trash"></i></a>
@@ -158,6 +158,9 @@
 							<div v-if="taskItemEditId == i" class="row">
 								<div class="col-md-2">
 									<input type="text" class="form-control input-sm" v-model="task_item.priority" />
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control input-sm" v-model="task_item.points" />
 								</div>
 								<div class="col-md-8">
 									<textarea class="form-control input-sm" v-model="task_item.title"></textarea>

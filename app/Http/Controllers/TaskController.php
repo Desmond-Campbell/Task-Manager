@@ -893,7 +893,32 @@ class TaskController extends Controller
 
  			$item_parts = explode( ' ', $item );
 
- 			if ( count( $item_parts ) > 1 ) {
+ 			if ( count( $item_parts ) > 2 ) {
+
+ 				$priority = is_numeric( trim( $item_parts[0] ) ) ? trim( $item_parts[0] ) : '';
+ 				$points = is_numeric( trim( $item_parts[1] ) ) ? trim( $item_parts[1] ) : '';
+
+ 				if ( trim( $priority ) && trim( $points ) ) {
+
+	 				$title = trim( str_replace( "$priority $points", '', $item ) );
+	 				$priority = (float) $priority;
+	 				$points = (float) $points;
+
+	 			} elseif ( trim( $priority ) ) {
+
+	 				$title = trim( str_replace( $priority, '', $item ) );
+	 				$priority = (float) $priority;
+	 				$points = 10;
+
+	 			} else {
+
+	 				$title = $item;
+	 				$priority = 50;
+	 				$points = 10;
+
+	 			}
+
+ 			} elseif ( count( $item_parts ) > 1 ) {
 
  				$priority = is_numeric( trim( $item_parts[0] ) ) ? trim( $item_parts[0] ) : '';
 
@@ -906,6 +931,7 @@ class TaskController extends Controller
 
 	 				$title = $item;
 	 				$priority = 50;
+	 				$points = 10;
 
 	 			}
 
@@ -918,7 +944,7 @@ class TaskController extends Controller
 
  			if ( trim( $title ) )  {
 
-	 			$task_items[] = [ 'priority' => $priority, 'title' => $title ];
+	 			$task_items[] = [ 'priority' => $priority, 'points' => $points, 'title' => $title ];
 
 	 		}
 

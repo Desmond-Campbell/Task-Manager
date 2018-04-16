@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TaskItem extends Model
 {
   protected $table = 'task_items';
-  protected $fillable = [ 'task_id', 'title', 'description', 'priority', 'completed', 'user_id' ];
+  protected $fillable = [ 'task_id', 'title', 'description', 'priority', 'completed', 'points', 'user_id' ];
 
   public function task() {
   	return $this->belongsTo(\App\Task::class);
@@ -26,7 +26,7 @@ class TaskItem extends Model
 
       $task_id = $task_item->task_id;
 
-      $weight = 100 - ( ( (float) $task_item->priority ) ?? 50 );
+      $weight = 100 - ( ( (float) $task_item->points ) ?? 50 );
       $total += $weight;
 
       if ( $task_item->completed ) $total_completed += $weight;

@@ -127,7 +127,7 @@
                 <div v-for="t in tasks[day][h]">
                 <a :href="'/edit/' + t.id">@{{t.title}} [@{{days_short[day]}}]</a>
                 <br />
-                <span class="help-block"><small>{{___('Due')}}: @{{ t.due_date_full | moment( "MMMM D @ h:mm a" )}}</small></span>
+                <span class="help-block"><small>@{{ t.start_date_full | moment( "h:mm" )}} - @{{ t.due_date_full | moment( "h:mm (D)" )}}</small></span>
                 </div>
               </div>
             </td>

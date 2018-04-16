@@ -16,7 +16,7 @@
 
     jQuery(document).ready(function() {
 
-      jQuery('#schedule').scrollTop(250);
+      // jQuery(document).scrollTop(250);
 
     });
 
