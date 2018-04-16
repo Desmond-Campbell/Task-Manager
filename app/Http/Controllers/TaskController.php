@@ -501,6 +501,8 @@ class TaskController extends Controller
 
  				}
 
+		 		Task::updateSchedule( $id );
+
  			}
 
  		} else {
@@ -785,7 +787,7 @@ class TaskController extends Controller
 
  		$tasks = Task::where('user_id', $user_id)->where('project_id', $project_id)->with('task_items', 'followups');
 
- 		$tasks = $tasks->whereBetween('start_date', [ $start_date->toDateString() . ' 00:00:00', $end_date->toDateString() . ' 23:59:59' ] );
+ 		$tasks = $tasks->whereBetween('start_date', [ $start_date->toDateString() . ' 00:00:00', $end_date->toDateString() . ' 00:00:00' ] );
 
  		$tasks = $tasks->orderBy('start_time', 'asc')->get();
 		$tasks = Task::calculateCompletion( $tasks );
