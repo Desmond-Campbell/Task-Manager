@@ -805,7 +805,7 @@ class TaskController extends Controller
 		foreach ( $tasks as $task ) {
 
 			$task->day = Carbon::parse( $task->start_date )->format('l');
-			$task->hour = Carbon::parse( $task->start_time )->format('H');
+			$task->hour = (int) Carbon::parse( $task->start_time )->format('H');
 			$task->length = get_time_diff( [ 'start' => $task->start_date_full, 'end' => $task->due_date_full ] );
 
 			$tasks_by_day[$task->day][$task->hour] = $tasks_by_day[$task->day][$task->hour] ?? [];
