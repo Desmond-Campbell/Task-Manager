@@ -10,7 +10,7 @@
 
 <div id="TaskController">
 
-	<h1>@{{ task.title }}</h1>
+	<h1><span :class="{ 'strikeout' : task.completed }">@{{ task.title }}</span></h1>
 
 	<div class="task-title-controls">
 		<h4><span class="badge badge-default">@{{ task.priority }}</span> <span class="badge badge-info">@{{ task.completion }}%</span> <button class="btn btn-sm btn-secondary" @click="updateTask()">{{___('Save')}}</button> <button class="btn btn-sm btn-secondary" @click="deleteTask()"><i class="fa fa-trash"></i></button> <button class="btn btn-sm btn-secondary" @click="task.expanded = !task.expanded; refresh()"><i class="fa fa-chevron-down" v-show="task.expanded"></i><i class="fa fa-chevron-up" v-show="!task.expanded"></i></button></h4>
@@ -36,13 +36,7 @@
 				</p>
 
 				<div class="view-task-controls">
-					<button class="btn btn-secondary btn-sm" @click="completeTask(task)"><i class="fa fa-check hidden-md-up"></i><span class="hidden-sm-down">{{___('Done')}}</span></button>
-					<button class="btn btn-sm btn-secondary" @click="enlistTask(task)" v-show="!task.working"><i class="fa fa-play hidden-md-up"></i><span class="hidden-sm-down">{{ ___('Enlist') }}</span></button>
-					<button class="btn btn-sm btn-secondary" @click="delistTask(task)" v-show="task.working"><i class="fa fa-stop hidden-md-up"></i><span class="hidden-sm-down">{{ ___('Delist') }}</span></button>
-					<button class="btn btn-secondary btn-sm" @click="rescheduleTask(task)"><i class="fa fa-clock hidden-md-up"></i><span class="hidden-sm-down">{{___('Re-schedule')}}</span></button>
-					<button class="btn btn-secondary btn-sm" @click="followupTask(task)"><i class="fa fa-share hidden-md-up"></i><span class="hidden-sm-down">{{___('Follow-up')}}</span></button>
-					<button class="btn btn-secondary btn-sm" @click="reprioritiseTask(task)"><i class="fa fa-exclamation hidden-md-up"></i><span class="hidden-sm-down">{{___('Re-prioritise')}}</span></button>
-					<button class="btn btn-secondary btn-sm" @click="cancelTask(task)"><i class="fa fa-times hidden-md-up"></i><span class="hidden-sm-down">{{___('Cancel')}}</span></button>
+					@include('tasks.task-entry-controls')
 				</div>
 
 				<div class="task-view-info push-down">

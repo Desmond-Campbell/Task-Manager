@@ -314,6 +314,26 @@ var vm = new Vue({
 
 		},
 
+		incompleteTask : function ( task ) {
+
+			axios.post( '/api/tasks/' + task.id + '/action', { task : task, action : 'incomplete' } ).then( 
+
+				function ( response ) {
+
+					vm.fetchTask();
+
+				},
+
+				function () {
+
+					alertError( general_error_failure );
+
+				}
+
+			);
+
+		},
+
 		followupTask : function ( task ) {
 
 			var followup_action = prompt("Follow-up action:", "");
