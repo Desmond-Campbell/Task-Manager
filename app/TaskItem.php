@@ -26,7 +26,7 @@ class TaskItem extends Model
 
       $task_id = $task_item->task_id;
 
-      $weight = 100 - ( ( (float) $task_item->points ) ?? 50 );
+      $weight = (float) $task_item->points ) ?? 10;
       $total += $weight;
 
       if ( $task_item->completed ) $total_completed += $weight;
