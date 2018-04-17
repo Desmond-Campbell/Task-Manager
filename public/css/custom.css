@@ -161,3 +161,7 @@ body {
 	font-size: 70%;
 }
 
+.faded {
+	filter: alpha(opacity=60);
+	opacity: 0.6;
+}

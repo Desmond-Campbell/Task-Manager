@@ -125,7 +125,7 @@
             <td width="13.5%" class="schedule-task-list" v-for="(d, day) in days" align="center">
               <div v-if="typeof tasks[day] !== 'undefined'">
                 <div v-for="t in tasks[day][h]">
-                <a :href="'/edit/' + t.id">@{{t.title}} [@{{days_short[day]}}]</a>
+                <a :href="'/edit/' + t.id"><span :class="{ 'strikeout faded' : t.completed }">@{{t.title}} [@{{days_short[day]}}]</span></a>
                 <br />
                 <span class="help-block"><small>@{{ t.start_date_full | moment( "HH:mm" )}} - @{{ t.due_date_full | moment( "HH:mm (D)" )}}</small></span>
                 </div>
