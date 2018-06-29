@@ -85,7 +85,11 @@ var nav = new Vue({
 
         function () {
 
-          alertError( general_error_failure );
+          if ( location.href.indexOf( '/login' ) < 0 && location.href.indexOf( '/register' ) < 0 ) {
+
+            location.reload();
+            
+          }
 
         }
 
