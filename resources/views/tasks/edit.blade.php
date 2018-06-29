@@ -137,7 +137,7 @@
 
 					<ul class="push-down task-items-list" v-if="task.task_items.length > 0">
 
-						<li v-for="(task_item, i) in task.task_items">
+						<li v-for="(task_item, i) in task.task_items" v-if="!task_item.completed">
 
 							<div v-if="taskItemEditId != i && !task_item.deleted && !newTaskItemMode" class="row">
 								<div class="col-md-10">
