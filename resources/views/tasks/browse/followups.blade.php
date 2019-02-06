@@ -87,7 +87,7 @@
 							@{{ task.customers }} / @{{ task.categories }} / @{{ task.features }}
 						</div>
 						<div class="task-entry-due-date">
-							@{{ task.due_date }} | @{{ task.due_time }}
+							<span class="help-block"><small>@{{ task.start_date_full | moment( "MMMM D @ h:mm a" ) }} - @{{ task.due_date_full | moment( "MMMM D @ h:mm a" )}}</small></span>
 						</div>
 						<div class="task-entry-controls">
 							@include('tasks.task-entry-controls')
