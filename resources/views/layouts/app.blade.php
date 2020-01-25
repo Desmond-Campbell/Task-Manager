@@ -9,6 +9,8 @@
     
     <title>@yield('title')</title>
 
+	<link rel="icon" href="https://img.icons8.com/color/48/000000/tasklist.png" />
+
     @include('layouts.page-head')
 
   </head>
