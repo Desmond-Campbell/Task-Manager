@@ -40,6 +40,7 @@ Route::post('/api/tasks/get-schedule', 'TaskController@apiBrowseSchedule');
 
 Route::get('/api/tasks/{id}/get', 'TaskController@getTask');
 Route::post('/api/tasks/{id}/update', 'TaskController@updateTask');
+Route::post('/api/tasks/{id}/duplicate', 'TaskController@duplicateTask');
 Route::post('/api/tasks/{id}/save-notes', 'TaskController@saveTaskNotes');
 Route::post('/api/tasks/{id}/parse-items-bulk', 'TaskController@parseBulkItems');
 Route::delete('/api/tasks/{id}/delete', 'TaskController@deleteTask');

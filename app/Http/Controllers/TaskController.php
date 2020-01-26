@@ -8,6 +8,7 @@ use App\Task;
 use App\TaskItem;
 use App\TaskFollowup;
 use App\SearchIndex;
+use DB;
 
 class TaskController extends Controller
 {
@@ -141,6 +142,57 @@ class TaskController extends Controller
 
  	}
  	
+	public function duplicateTask( Request $R ) {
+
+                $id = $R->route('id', 0);
+                $user_id = get_user_id();
+
+                $task = $newTaskId = null;
+                $taskItems = [];
+                $diffInDays = 0;
+
+                if ( $id ) {
+
+                        $task = Task::where('user_id', $user_id)->with('task_items', 'followups')->find( $id );
+
+                        if ( !$task ) {
+                                $task = null;
+                        } else {
+                                $diffInDays = Carbon::parse($task->start_date)->diffInDays(Carbon::parse($task->due_date));
+                                $taskItems = $task->task_items;
+                                $task = $task->toArray();
+
+                                $task['start_date'] = Carbon::now()->toDateString();
+                                $task['due_date'] = Carbon::now()->addDays(abs($diffInDays))->toDateString();
+
+                                unset($task['created_at']);
+                                unset($task['updated_at']);
+
+                                $newTask = Task::create($task);
+                                $newTaskId = $newTask->id;
+
+                                foreach ( $taskItems as $taskItem ) {
+
+                                        $taskItem = $taskItem->toArray();
+                                        unset($taskItem['created_at']);
+                                        unset($taskItem['updated_at']);
+                                        $taskItem['completed'] = 0;
+                                        $taskItem['task_id'] = $newTaskId;
+
+                                        TaskItem::create($taskItem);
+
+                                }
+
+                                Task::updateSchedule( $newTaskId );
+
+                        }
+                        
+                }
+
+                return response()->json( [ 'newTaskId' => $newTaskId ] );
+
+        }
+
  	public function updateTask( Request $R ) {
 
  		$id = $R->route('id', 0);
@@ -323,12 +375,22 @@ class TaskController extends Controller
  		$project_id = get_project_id();
  		$user_id = get_user_id();
 
- 		$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->find( $id )->delete();
+ 		$task = Task::where('user_id', $user_id)->where('project_id', $project_id)->find( $id );
 
  		if ( $task ) {
 
- 			// TaskFollowup::where('task_id', $id)->delete();
- 			// TaskItem::where('task_id', $id)->delete();
+	 		$followUps = TaskFollowup::where('task_id', $id)->get();
+                        foreach ( $followUps as $followUp ) {
+                                $followUp->delete();
+                       	}
+                        DB::table('task_followups')->where('task_id', $id)->delete();
+
+                        $taskItems = TaskItem::where('task_id', $id)->get();
+                        foreach ( $taskItems as $taskItem ) {
+                                $taskItem->delete();
+                        }
+                        DB::table('task_items')->where('task_id', $id)->delete();
+
  			$task->delete();
 
  		} else {

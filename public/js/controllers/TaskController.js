@@ -87,6 +87,36 @@ var vm = new Vue({
 
 		},
 
+		duplicateTask : function () {
+
+                        idcheck = this.id;
+
+                        axios.post( '/api/tasks/' + this.id + '/duplicate', {} ).then(
+
+                                function ( response ) {
+
+                                        if ( typeof response.data.errors !== 'undefined' ) {
+
+                                                alertError( response.data.errors );
+
+                                        } else {
+
+                                                if ( typeof response.data.newTaskId !== 'undefined' ) location.assign( '/edit/' + response.data.newTaskId );
+
+                                        }
+
+                                },
+
+                                function () {
+
+                                        alertError( general_error_failure );
+
+                                }
+
+                        );
+
+                },
+
 		addTaskItemsBulk : function () {
 
 			axios.post( '/api/tasks/' + this.id + '/parse-items-bulk', { task_items : this.task_items_bulk } ).then( 
